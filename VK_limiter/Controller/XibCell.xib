@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="XibCell" rowHeight="100" id="KGk-i7-Jjw" customClass="XibCell" customModule="VK_limiter" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ayh-Je-Ntl">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2SW-2X-YZv" customClass="ShadowView3" customModule="VK_limiter" customModuleProvider="target">
+                                <rect key="frame" x="5" y="6" width="89" height="89"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="2SW-2X-YZv" secondAttribute="height" multiplier="1:1" id="5uM-w5-uXR"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="image1" value="1no-img"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="0.59999999999999998"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="0.0" height="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apple" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tit-id-SZ3">
+                                <rect key="frame" x="104" y="39.5" width="206" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Tit-id-SZ3" firstAttribute="leading" secondItem="2SW-2X-YZv" secondAttribute="trailing" constant="10" id="13U-Kd-DoA"/>
+                            <constraint firstItem="Tit-id-SZ3" firstAttribute="centerY" secondItem="Ayh-Je-Ntl" secondAttribute="centerY" id="210-fJ-sza"/>
+                            <constraint firstItem="2SW-2X-YZv" firstAttribute="top" secondItem="Ayh-Je-Ntl" secondAttribute="top" constant="6" id="NcY-Mf-laZ"/>
+                            <constraint firstItem="2SW-2X-YZv" firstAttribute="leading" secondItem="Ayh-Je-Ntl" secondAttribute="leading" constant="5" id="daf-p3-dPC"/>
+                            <constraint firstAttribute="bottom" secondItem="2SW-2X-YZv" secondAttribute="bottom" constant="5" id="e1A-SV-sJ6"/>
+                            <constraint firstAttribute="trailing" secondItem="Tit-id-SZ3" secondAttribute="trailing" constant="10" id="wrF-t8-Lum"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Ayh-Je-Ntl" secondAttribute="bottom" id="AE1-Ta-owT"/>
+                    <constraint firstItem="Ayh-Je-Ntl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="PWK-RJ-Hwz"/>
+                    <constraint firstItem="Ayh-Je-Ntl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="TgW-9p-kjZ"/>
+                    <constraint firstAttribute="trailing" secondItem="Ayh-Je-Ntl" secondAttribute="trailing" id="mbF-Fj-NWt"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="ourLabel" destination="Tit-id-SZ3" id="8Jv-BF-Zbs"/>
+                <outlet property="shadowView" destination="2SW-2X-YZv" id="6DH-1a-aok"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="89.0625"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="1no-img" width="500" height="500"/>
+    </resources>
+</document>
