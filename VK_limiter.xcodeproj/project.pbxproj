@@ -10,6 +10,7 @@
 		E501C657245DB63600729270 /* NewsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C656245DB63600729270 /* NewsTableVC.swift */; };
 		E501C659245DC35500729270 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C658245DC35500729270 /* NewsCell.swift */; };
 		E50CE08D2475BD730008B0D3 /* AnimatorBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CE08C2475BD730008B0D3 /* AnimatorBack.swift */; };
+		E510A0A724882A2700EA0A11 /* UserStructAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510A0A624882A2700EA0A11 /* UserStructAPI.swift */; };
 		E513097422CCD2070014E711 /* FriendCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513097322CCD2070014E711 /* FriendCollectionVC.swift */; };
 		E54CA66522C8653B00EB78AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54CA66422C8653B00EB78AE /* AppDelegate.swift */; };
 		E54CA66722C8653B00EB78AE /* FirstVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54CA66622C8653B00EB78AE /* FirstVC.swift */; };
@@ -43,6 +44,7 @@
 		E501C656245DB63600729270 /* NewsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableVC.swift; sourceTree = "<group>"; };
 		E501C658245DC35500729270 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		E50CE08C2475BD730008B0D3 /* AnimatorBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBack.swift; sourceTree = "<group>"; };
+		E510A0A624882A2700EA0A11 /* UserStructAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStructAPI.swift; sourceTree = "<group>"; };
 		E513097322CCD2070014E711 /* FriendCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCollectionVC.swift; sourceTree = "<group>"; };
 		E54CA66122C8653B00EB78AE /* VK limiter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VK limiter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54CA66422C8653B00EB78AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				E5AA35CF22D5081F00F5F0A2 /* UserStruct.swift */,
+				E510A0A624882A2700EA0A11 /* UserStructAPI.swift */,
 				E5AA35D122D5082C00F5F0A2 /* GroupStruct.swift */,
 			);
 			path = Model;
@@ -310,6 +313,7 @@
 				E5C49DD924705479008F3D41 /* CustomNavController.swift in Sources */,
 				E54CA66522C8653B00EB78AE /* AppDelegate.swift in Sources */,
 				E50CE08D2475BD730008B0D3 /* AnimatorBack.swift in Sources */,
+				E510A0A724882A2700EA0A11 /* UserStructAPI.swift in Sources */,
 				E5F9A7D62468659C00EED089 /* PhotoVC.swift in Sources */,
 				E5C49DDF24708977008F3D41 /* AnimatorPop.swift in Sources */,
 				E5F474F222CCC35B00E73A12 /* AllGroupsTableVC.swift in Sources */,

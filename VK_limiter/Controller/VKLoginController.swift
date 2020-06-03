@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 class VKLoginController: UIViewController {
-
+    
     var token = ""
     
     @IBOutlet weak var vkWebView: WKWebView! {
@@ -44,12 +44,12 @@ extension VKLoginController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         
         guard let url = navigationResponse.response.url, url.path == "/blank.html",
-        let fragment = url.fragment else {
-            decisionHandler(.allow)
-            return
+            let fragment = url.fragment else {
+                decisionHandler(.allow)
+                return
         }
         let params = fragment
-        .components(separatedBy: "&")
+            .components(separatedBy: "&")
             .map { $0.components(separatedBy: "=")}
             .reduce([String:String]()) { result , param in
                 var dict = result
@@ -64,23 +64,23 @@ extension VKLoginController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-//        self.token = tokenn
+        //        self.token = tokenn
         Session.shared.token = tokenn
         Session.shared.userId = userIdd
         print("session token: \(Session.shared.token!)")
-//        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
+        //        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
         
-        loadGroups()
-        searchGroups()
+        //                loadGroups()
+        //        searchGroups()
         loadFriends()
-        photosGetAll()
+        //        photosGetAll()
         
         performSegue(withIdentifier: "vkLogin", sender: nil)
         decisionHandler(.cancel)
     }
     
     func loadGroups() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -92,18 +92,18 @@ extension VKLoginController: WKNavigationDelegate {
         
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request2) { data, response, error in
+            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+            print(json as Any)
+        }
+        task.resume()
     }
     
     func searchGroups() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -116,18 +116,18 @@ extension VKLoginController: WKNavigationDelegate {
         
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request2) { data, response, error in
+            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+            print(json as Any)
+        }
+        task.resume()
     }
     
     func loadFriends() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -136,25 +136,46 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
             URLQueryItem(name: "order", value: "random"),
-            URLQueryItem(name: "count", value: "3"),
+            URLQueryItem(name: "count", value: "30"),
             URLQueryItem(name: "offset", value: "5"),
             URLQueryItem(name: "fields", value: "nickname"),
             URLQueryItem(name: "name_case", value: "nom"),
             URLQueryItem(name: "v", value: "5.107")]
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request2) { data, response, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let data = data,
+            let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+            
+            
+            let users = json as! [String: Any]
+            
+            let response = users["response"] as! [String: Any]
+            let items = response["items"] as! [Any]
+            for item in items {
+                let friend = item as! [String: Any]
+                let name = friend["first_name"] as! String
+                let surname = friend["last_name"] as! String
+                
+                let user = UserStructAPI(name: name, lastName: surname)
+                print(user)
+                
+            }
+        }
+        task.resume()
     }
     
     func photosGetAll() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -168,14 +189,14 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "v", value: "5.107")]
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request2) { data, response, error in
+            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+            print(json as Any)
+        }
+        task.resume()
     }
     
     
