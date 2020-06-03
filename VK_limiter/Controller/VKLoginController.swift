@@ -60,13 +60,17 @@ extension VKLoginController: WKNavigationDelegate {
         }
         print(params)
         
-        guard let tokenn = params["access_token"]/*, let userId = Int(params["userId"]!)*/ else {
+        guard let tokenn = params["access_token"], let userIdd = Int(params["user_id"]!) else {
             decisionHandler(.cancel)
             return
         }
-        self.token = tokenn
-        print("token:\(self.token)"/* , userId: \(userId)*/)
-        loadGroups()
+//        self.token = tokenn
+        Session.shared.token = tokenn
+        Session.shared.userId = userIdd
+        print("session token: \(Session.shared.token!)")
+//        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
+//        loadGroups()
+        loadFriends()
         performSegue(withIdentifier: "vkLogin", sender: nil)
         decisionHandler(.cancel)
     }
@@ -78,7 +82,7 @@ extension VKLoginController: WKNavigationDelegate {
         urlComponents2.host = "api.vk.com"
         urlComponents2.path = "/method/groups.get"
         urlComponents2.queryItems = [
-            URLQueryItem(name: "access_token", value: self.token),
+            URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "extended", value: "1"),
             URLQueryItem(name: "v", value: "5.85")]
         
@@ -92,7 +96,33 @@ extension VKLoginController: WKNavigationDelegate {
                     print(json as Any)
                 }
                 task.resume()
+    }
+    
+    func loadFriends() {
+
+        var urlComponents2 = URLComponents()
+        urlComponents2.scheme = "https"
+        urlComponents2.host = "api.vk.com"
+        urlComponents2.path = "/method/friends.get"
+        urlComponents2.queryItems = [
+            URLQueryItem(name: "access_token", value: Session.shared.token!),
+            URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
+            URLQueryItem(name: "order", value: "random"),
+            URLQueryItem(name: "count", value: "3"),
+            URLQueryItem(name: "offset", value: "5"),
+            URLQueryItem(name: "fields", value: "nickname"),
+            URLQueryItem(name: "name_case", value: "nom"),
+            URLQueryItem(name: "v", value: "5.107")]
         
+        guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
+                var request2 = URLRequest(url: url)
+                request2.httpMethod = "GET"
+                let session = URLSession.shared
+                let task = session.dataTask(with: request2) { data, response, error in
+                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+                    print(json as Any)
+                }
+                task.resume()
     }
     
 }
