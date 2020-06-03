@@ -373,6 +373,10 @@ class FirstVC: UIViewController, UIAlertViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let networkingService = NetworkingService()
+        networkingService.sendRequest()
+        
         animationPerformed = false
         loginTextField.placeholder = "Email или телефон"
         passwordTextField.placeholder = "Пароль"

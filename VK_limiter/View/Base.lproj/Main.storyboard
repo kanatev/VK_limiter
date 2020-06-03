@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="OpI-za-Abg">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -71,7 +71,42 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="57.971014492753625" y="20.380434782608699"/>
+            <point key="canvasLocation" x="-313" y="475"/>
+        </scene>
+        <!--Login Controller-->
+        <scene sceneID="AcJ-Zx-G02">
+            <objects>
+                <viewController id="OpI-za-Abg" customClass="VKLoginController" customModule="VK_limiter" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HdE-Mb-vKa">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ncg-uY-MnL">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Ncg-uY-MnL" firstAttribute="top" secondItem="GuL-tR-TuC" secondAttribute="top" id="Ap1-S9-PB0"/>
+                            <constraint firstItem="GuL-tR-TuC" firstAttribute="trailing" secondItem="Ncg-uY-MnL" secondAttribute="trailing" id="Sch-1e-b6b"/>
+                            <constraint firstItem="GuL-tR-TuC" firstAttribute="bottom" secondItem="Ncg-uY-MnL" secondAttribute="bottom" id="bWC-HA-TcC"/>
+                            <constraint firstItem="Ncg-uY-MnL" firstAttribute="leading" secondItem="GuL-tR-TuC" secondAttribute="leading" id="wgy-xO-olf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="GuL-tR-TuC"/>
+                    </view>
+                    <connections>
+                        <outlet property="vkWebView" destination="Ncg-uY-MnL" id="B80-il-Zyh"/>
+                        <segue destination="Fvi-iI-N3H" kind="presentation" identifier="vkLogin" modalPresentationStyle="fullScreen" id="RRd-Il-eiu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O4O-qg-XLw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-313" y="-267"/>
         </scene>
         <!--Новости-->
         <scene sceneID="Hvk-qb-qvN">
@@ -537,6 +572,7 @@
         <scene sceneID="CND-oj-FHq">
             <objects>
                 <tabBarController id="Fvi-iI-N3H" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Rn4-HE-rRI"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ECK-oJ-l0C">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -553,6 +589,9 @@
             <point key="canvasLocation" x="852" y="20"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="RRd-Il-eiu"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="1no-img" width="500" height="500"/>
         <image name="Portman" width="224" height="225"/>
