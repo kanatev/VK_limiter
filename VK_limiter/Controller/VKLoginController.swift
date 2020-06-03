@@ -69,8 +69,11 @@ extension VKLoginController: WKNavigationDelegate {
         Session.shared.userId = userIdd
         print("session token: \(Session.shared.token!)")
 //        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
+        
 //        loadGroups()
-        loadFriends()
+//        loadFriends()
+        photosGetAll()
+        
         performSegue(withIdentifier: "vkLogin", sender: nil)
         decisionHandler(.cancel)
     }
@@ -112,6 +115,31 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "offset", value: "5"),
             URLQueryItem(name: "fields", value: "nickname"),
             URLQueryItem(name: "name_case", value: "nom"),
+            URLQueryItem(name: "v", value: "5.107")]
+        
+        guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
+                var request2 = URLRequest(url: url)
+                request2.httpMethod = "GET"
+                let session = URLSession.shared
+                let task = session.dataTask(with: request2) { data, response, error in
+                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+                    print(json as Any)
+                }
+                task.resume()
+    }
+    
+    func photosGetAll() {
+
+        var urlComponents2 = URLComponents()
+        urlComponents2.scheme = "https"
+        urlComponents2.host = "api.vk.com"
+        urlComponents2.path = "/method/photos.getAll"
+        urlComponents2.queryItems = [
+            URLQueryItem(name: "access_token", value: Session.shared.token!),
+            URLQueryItem(name: "owner_id", value: String(Session.shared.userId!)),
+            URLQueryItem(name: "extended", value: "0"),
+            URLQueryItem(name: "offset", value: "0"),
+            URLQueryItem(name: "count", value: "3"),
             URLQueryItem(name: "v", value: "5.107")]
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
