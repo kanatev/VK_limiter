@@ -135,10 +135,6 @@ import UIKit
     
     
     // Func for sorting friends
-    
-    /// Функция сортировки друзей
-    /// - Parameter friends: принимает массив друзей
-    /// - Returns: возвращает кортеж
     private func sort(_ friends: [UserStruct]) -> (characters: [Character], sortedCharacters: [Character:[UserStruct]]) {
         
         var characters = [Character]()
@@ -159,21 +155,26 @@ import UIKit
         
         return (characters, sortedPeople)
     }
-//
-//    func newSort(){
-//        var chars1 = [Character]()
-//        var sortedPeople1 = [Character:[UserStruct]]()
-//
-//        // перебираем массив UserStruct
-//        for friend in self.friendsArray {
-//            let char = friend.name.first
-//            var thisCharFriends = sortedPeople1[char!]
-//            thisCharFriends!.append(friend)
-//            sortedPeople1[char!] = thisCharFriends
-//
-//        }
-//    }
-//
+
+    private func sortFriendsFromAPI(_ friends: [FriendStruct]) -> (characters: [Character], sortedCharacters: [Character:[FriendStruct]]) {
+        
+        var characters = [Character]()
+        var sortedPeople = [Character: [FriendStruct]]()
+        
+        friends.forEach { friend in
+            guard let character = friend.first_name.first else { return }
+            if var thisCharFriends = sortedPeople[character] {
+                thisCharFriends.append(friend)
+                sortedPeople[character] = thisCharFriends
+            } else {
+                sortedPeople[character] = [friend]
+                characters.append(character)
+            }
+        }
+        characters.sort()
+        return (characters, sortedPeople)
+    }
+    
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         (firstCharacters, sortedFriendsDict) = sort(friendsArray)
