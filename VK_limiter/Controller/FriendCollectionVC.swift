@@ -10,12 +10,17 @@ import UIKit
 
 class FriendCollectionVC: UICollectionViewController {
 
-    var ourPerson: UserStruct?
-    var photoArray: [UIImage] = []
+//    var ourPerson: UserStruct?
+    var ourPerson: FriendStruct?
+
+//    var photoArray: [UIImage] = []
+    var photoArray: [CurrentFriendPhotoStruct] = []
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = ourPerson!.first_name + " " + ourPerson!.last_name
 //        print(ourPerson as Any)
     }
 
@@ -30,7 +35,9 @@ class FriendCollectionVC: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return photoArray.count
-        return (ourPerson?.photoArray!.count)!
+//        return (ourPerson?.photoArray!.count)!
+        return photoArray.count
+//        return 0
 
     }
 
@@ -38,33 +45,20 @@ class FriendCollectionVC: UICollectionViewController {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendsCollectionCell", for: indexPath) as? FriendsCollectionViewCell else {fatalError("Ячейка не может быть переиспользована")}
         
-//        cell.imageView.image = photoArray[indexPath.item]
-        cell.imageView.image = ourPerson?.photoArray![indexPath.item]
-
+//        cell.imageView.image = ourPerson?.photoArray![indexPath.item]
+        cell.imageView.image = photoArray[indexPath.item].photo
         
         return cell
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-   
         let vc = PhotoVC()
-        
-//        vc.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-        
         vc.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
         
+//        vc.imageView?.image = ourPerson?.photoArray![indexPath.item]
+//        vc.photoArray = ourPerson?.photoArray
         
-//        vc.imageView?.image = photoArray[indexPath.item]
-        vc.imageView?.image = ourPerson?.photoArray![indexPath.item]
 
-        
-//        vc.imageView?.sizeThatFits(CGSize(width: 100, height: 100))
-//        vc.imageView?.heig
-        
-//        vc.photoArray = photoArray
-        vc.photoArray = ourPerson?.photoArray
-
-//        vc.supportedInterfaceOrientations.rawValue = 
         vc.modalPresentationStyle = .fullScreen
         vc.setNeedsStatusBarAppearanceUpdate()
         present(vc, animated: true, completion: nil)

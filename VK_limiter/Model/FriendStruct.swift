@@ -11,7 +11,7 @@ import UIKit
 
 struct FriendStruct: CustomStringConvertible {
     var description: String {
-        return "\(first_name) \(last_name)"
+        return "\(first_name) \(last_name) \(id)"
     }
     
     let id: Int
