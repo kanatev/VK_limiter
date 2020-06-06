@@ -374,7 +374,7 @@ extension VKLoginController: WKNavigationDelegate {
                 URLQueryItem(name: "access_token", value: Session.shared.token!),
                 URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
                 URLQueryItem(name: "order", value: "random"),
-                URLQueryItem(name: "count", value: "3"),
+//                URLQueryItem(name: "count", value: "50"),
                 URLQueryItem(name: "fields", value: "photo_100"),
                 URLQueryItem(name: "v", value: "5.107")]
             
@@ -408,7 +408,8 @@ extension VKLoginController: WKNavigationDelegate {
                                 let currentFriend = FriendStruct(id: id, name: firstName, lastName: lastName, photo100: img!)
                                 friendsArrayParsing.append(currentFriend)
                                 FriendsDataSingleton.shared.friendsArray = friendsArrayParsing
-                                print(FriendsDataSingleton.shared.friendsArray as Any)
+//                                print(FriendsDataSingleton.shared.friendsArray as Any)
+                                print(FriendsDataSingleton.shared.friendsArray?.count as Any)
                             }
                         } else {
                             print("Error loading image");

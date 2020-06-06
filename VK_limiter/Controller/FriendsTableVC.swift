@@ -21,6 +21,10 @@ import UIKit
     var firstCharacters = [Character]()
     var sortedFriendsDict: [Character:[UserStruct]] = [:]
     
+    var friendsArrayAPI = [FriendStruct]()
+    var firstCharactersAPI = [Character]()
+    var sortedFriendsDictAPI: [Character:[FriendStruct]] = [:]
+     
     @IBAction func exitButton(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -32,34 +36,14 @@ import UIKit
             
             
             if let indexPath = friendSource.tableView.indexPathForSelectedRow {
-//                friendDestination.photoArray = friendsArray[indexPath.row].photoArray ?? [UIImage (named: "1no-img")!]
-                
-                
                 let ourSec = firstCharacters[indexPath.section]
-//                let ourDict = Character:[UserStruct]
                 var tmpArray: [UserStruct] = []
-
-                
-                
                 for dicct in sortedFriendsDict {
-                    
                     if dicct.key == ourSec {
                         tmpArray.append(contentsOf: dicct.value)
                     }
-//                    print(friendDestination.ourPerson as Any)
-                                            
-                    //                        friendDestination.photoArray = friendsArray[indexPath.row].photoArray ?? [UIImage (named: "1no-img")!]
-                    
-                    
                 }
-//                print(tmpArray)
                 friendDestination.ourPerson = tmpArray[indexPath.row]
-
-                
-//                friendDestination.ourPerson = friendsArray[indexPath.section]
-                
-                
-//                let tmpPers =
             }
         }
     }
@@ -87,10 +71,11 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         ourSearchBar.delegate = self
-        
+        self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
         // объединяем массивы в кортеж и присваиваем результат sort()
         (firstCharacters, sortedFriendsDict) = sort(friendsArray)
-        
+        (firstCharactersAPI, sortedFriendsDictAPI) = sortFriendsFromAPI(friendsArrayAPI)
+         
         //        self.refreshControl = myRefreshControl
         self.modalPresentationStyle = .fullScreen
         //        self.navigationController?.modalPresentationStyle = .fullScreen
@@ -103,29 +88,40 @@ import UIKit
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return firstCharacters.count
+//        return firstCharacters.count
+        return firstCharactersAPI.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let character = firstCharacters[section]
-        let friendsCount = sortedFriendsDict[character]?.count
+//        let character = firstCharacters[section]
+//        let friendsCount = sortedFriendsDict[character]?.count
+//        return friendsCount ?? 0
+        let character = firstCharactersAPI[section]
+        let friendsCount = sortedFriendsDictAPI[character]?.count
         return friendsCount ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsTableViewCell
-        let character = firstCharacters[indexPath.section]
-        if let friends = sortedFriendsDict[character]{
-            cell.friendNameLabel.text = friends[indexPath.row].name
-            cell.shadowView.image1 = friends[indexPath.row].avatar
-            
+//        let character = firstCharacters[indexPath.section]
+//        if let friends = sortedFriendsDict[character]{
+//            cell.friendNameLabel.text = friends[indexPath.row].name
+//            cell.shadowView.image1 = friends[indexPath.row].avatar
+//
+//            return cell
+//        }
+        let character = firstCharactersAPI[indexPath.section]
+        if let friends = sortedFriendsDictAPI[character]{
+            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
+            cell.shadowView.image1 = friends[indexPath.row].photo100
             return cell
         }
         return UITableViewCell()
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let character = firstCharacters[section]
+//        let character = firstCharacters[section]
+        let character = firstCharactersAPI[section]
         return String(character)
     }
     
@@ -220,21 +216,18 @@ import UIKit
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        let arrWithSectionNames = firstCharacters.map { String($0) }
+//        let arrWithSectionNames = firstCharacters.map { String($0) }
+        let arrWithSectionNames = firstCharactersAPI.map { String($0) }
         var arrWithDots: [String] = []
         for index in arrWithSectionNames.indices {
-            
             if index == 0 || index % 2 == 0 {
                 arrWithDots.append(arrWithSectionNames[index])
             } else {
                 arrWithDots.append("•")
             }
         }
-//        print(arrWithSectionNames)
-//        print(arrWithDots as Any)
         return arrWithDots
     }
-    
 }
 
 //extension UINavigationController {
