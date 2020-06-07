@@ -23,6 +23,9 @@ class GroupsTableVC: UITableViewController, UISearchBarDelegate, ChildViewContro
         tableView.reloadData()
     }
     
+    var groupsArrayFromAPI: [GroupStructAPI] = []
+    var groupsArrayFromAPIWithPhoto: [GroupStructAPIWithPhoto] = []
+
     
     var groupsArray = GroupStruct.createGroupsArray()
     var filteredArray:[GroupStruct]!
@@ -31,6 +34,8 @@ class GroupsTableVC: UITableViewController, UISearchBarDelegate, ChildViewContro
         self.dismiss(animated: true, completion: nil)
     }
     @IBOutlet weak var ourSearchBar: UISearchBar!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +49,15 @@ class GroupsTableVC: UITableViewController, UISearchBarDelegate, ChildViewContro
         
         // задаем высоту ячейки
         self.tableView.rowHeight = 80
+    }
+    
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.groupsArrayFromAPI = GroupsDataSingleton.shared.groupsArray ?? []
+        self.groupsArrayFromAPIWithPhoto = GrDatSingWithPhoto.shared.groupsArray ?? []
+        
+        tableView.reloadData()
     }
     
     //    добавление группы через обратный сегвей
@@ -68,17 +82,34 @@ class GroupsTableVC: UITableViewController, UISearchBarDelegate, ChildViewContro
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.filteredArray.count
+//        return self.filteredArray.count
+        return self.groupsArrayFromAPIWithPhoto.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "XibCell", for: indexPath) as? XibCell else {preconditionFailure("XibCell doesn't work")}
-        cell.ourLabel?.text = self.filteredArray[indexPath.row].groupName
-        cell.shadowView.image1 = self.filteredArray[indexPath.row].groupAvatar ?? UIImage(named: "empty_photo")!
+//        cell.ourLabel?.text = self.filteredArray[indexPath.row].groupName
+//        cell.shadowView.image1 = self.filteredArray[indexPath.row].groupAvatar ?? UIImage(named: "empty_photo")!
+        
+//        cell.ourLabel?.text = self.groupsArrayFromAPI[indexPath.row].name
+        cell.ourLabel?.text = self.groupsArrayFromAPIWithPhoto[indexPath.row].name
+
+        
+        //        cell.ourLabel?.text = GroupsDataSingleton.shared.groupsArray[indexPath.row].name
+//        cell.ourLabel?.text = GroupsDataSingleton.shared.groupsArray
+
+//        let ourUrl = URL(fileURLWithPath: self.groupsArrayFromAPI[indexPath.row].photo50)
+//        let ourImage = downloadImage(from: ourUrl)
+        
+//        cell.shadowView.image1 = UIImage(named: "empty_photo")!
+        cell.shadowView.image1 = self.groupsArrayFromAPIWithPhoto[indexPath.row].photo100 
+
         
         return cell
     }
+    
+    
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

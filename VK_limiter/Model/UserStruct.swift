@@ -14,16 +14,16 @@ struct UserStruct {
     let name: String
     let avatar: UIImage?
     let photoArray: [UIImage]?
-    
+
     init(name: String,
         avatar: UIImage? = nil,
         photoArray: [UIImage]? = nil) {
-        
+
         self.name = name
         self.avatar = avatar
         self.photoArray = photoArray
     }
-    
+
     static func createFriendsArray () -> [UserStruct] {
         return friendsArray
     }

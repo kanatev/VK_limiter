@@ -10,14 +10,36 @@ import UIKit
 import WebKit
 
 class VKLoginController: UIViewController {
-
+    
     var token = ""
+    var groupsArrayFromAPI: [GroupStructAPI] = []
+    var groupsArrayFromAPIWithPhoto: [GroupStructAPIWithPhoto] = []
+    
     
     @IBOutlet weak var vkWebView: WKWebView! {
         didSet{
             vkWebView.navigationDelegate = self
         }
     }
+    
+    // функция для подгрузки фото
+    //    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+    //        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    //    }
+    //
+    //    func downloadImage(from ourUrl: URL) -> UIImage {
+    //        var image: UIImage?
+    //        getData(from: ourUrl) { data, response, error in
+    //                    guard let data = data, error == nil else { return }
+    //                    print(response?.suggestedFilename ?? ourUrl.lastPathComponent)
+    //
+    //            DispatchQueue.main.async() { [weak self] in
+    //                        image = UIImage(data: data)
+    //                    }
+    //                }
+    //        return image ?? UIImage(named: "empty_photo")!
+    //    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +49,7 @@ class VKLoginController: UIViewController {
         urlComponents.host = "oauth.vk.com"
         urlComponents.path = "/authorize"
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: "7013952"),
+            URLQueryItem(name: "client_id", value: "7502536"),
             URLQueryItem(name: "display", value: "mobile"),
             URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
             URLQueryItem(name: "scope", value: "262150"),
@@ -44,12 +66,12 @@ extension VKLoginController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         
         guard let url = navigationResponse.response.url, url.path == "/blank.html",
-        let fragment = url.fragment else {
-            decisionHandler(.allow)
-            return
+            let fragment = url.fragment else {
+                decisionHandler(.allow)
+                return
         }
         let params = fragment
-        .components(separatedBy: "&")
+            .components(separatedBy: "&")
             .map { $0.components(separatedBy: "=")}
             .reduce([String:String]()) { result , param in
                 var dict = result
@@ -58,29 +80,32 @@ extension VKLoginController: WKNavigationDelegate {
                 dict[key] = value
                 return dict
         }
-        print(params)
+        //        print(params)
         
         guard let tokenn = params["access_token"], let userIdd = Int(params["user_id"]!) else {
             decisionHandler(.cancel)
             return
         }
-//        self.token = tokenn
+        //        self.token = tokenn
         Session.shared.token = tokenn
         Session.shared.userId = userIdd
         print("session token: \(Session.shared.token!)")
-//        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
+        //        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
         
-        loadGroups()
-        searchGroups()
-        loadFriends()
-        photosGetAll()
+        //loadGroupsSimple()
+        //searchGroups()
+        //        loadFriends()
+        //photosGetAll()
+        //        loadGroupsWithParsing()
+        loadGroupsWithParsingWithPhoto()
+        loadFriendsWithParsingWithPhoto()
         
         performSegue(withIdentifier: "vkLogin", sender: nil)
         decisionHandler(.cancel)
     }
     
-    func loadGroups() {
-
+    func loadGroupsSimple() {
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -88,22 +113,22 @@ extension VKLoginController: WKNavigationDelegate {
         urlComponents2.queryItems = [
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "extended", value: "1"),
-            URLQueryItem(name: "v", value: "5.85")]
+            URLQueryItem(name: "v", value: "5.107")]
         
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request2) { data, response, error in
+            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+            print(json as Any)
+        }
+        task.resume()
     }
     
     func searchGroups() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -116,18 +141,18 @@ extension VKLoginController: WKNavigationDelegate {
         
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request2) { data, response, error in
+            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+            print(json as Any)
+        }
+        task.resume()
     }
     
     func loadFriends() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
@@ -136,48 +161,280 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
             URLQueryItem(name: "order", value: "random"),
-            URLQueryItem(name: "count", value: "3"),
+            URLQueryItem(name: "count", value: "50"),
             URLQueryItem(name: "offset", value: "5"),
             URLQueryItem(name: "fields", value: "nickname"),
             URLQueryItem(name: "name_case", value: "nom"),
             URLQueryItem(name: "v", value: "5.107")]
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request2) { data, response, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let data = data,
+                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+            //            print(json)
+            
+            let users = json as! [String: Any]
+            
+            let response = users["response"] as! [String: Any]
+            let items = response["items"] as! [Any]
+            for item in items {
+                let friend = item as! [String: Any]
+                let name = friend["first_name"] as! String
+                let surname = friend["last_name"] as! String
+                
+                let user = UserStructAPI(name: name, lastName: surname)
+                print(user)
+                
+            }
+        }
+        task.resume()
     }
     
     func photosGetAll() {
-
+        
         var urlComponents2 = URLComponents()
         urlComponents2.scheme = "https"
         urlComponents2.host = "api.vk.com"
         urlComponents2.path = "/method/photos.getAll"
         urlComponents2.queryItems = [
             URLQueryItem(name: "access_token", value: Session.shared.token!),
-            URLQueryItem(name: "owner_id", value: String(Session.shared.userId!)),
+            URLQueryItem(name: "owner_id", value: "205874265"),
             URLQueryItem(name: "extended", value: "0"),
             URLQueryItem(name: "offset", value: "0"),
             URLQueryItem(name: "count", value: "3"),
             URLQueryItem(name: "v", value: "5.107")]
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-                var request2 = URLRequest(url: url)
-                request2.httpMethod = "GET"
-                let session = URLSession.shared
-                let task = session.dataTask(with: request2) { data, response, error in
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    print(json as Any)
-                }
-                task.resume()
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request2) { data, response, error in
+            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+            print(json as Any)
+        }
+        task.resume()
     }
     
     
+    func loadGroupsWithParsing() {
+        
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "api.vk.com"
+        urlComponents.path = "/method/groups.get"
+        urlComponents.queryItems = [
+            URLQueryItem(name: "access_token", value: Session.shared.token!),
+            URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
+            URLQueryItem(name: "extended", value: "1"),
+            URLQueryItem(name: "count", value: "50"),
+            URLQueryItem(name: "v", value: "5.107")]
+        
+        guard let url = urlComponents.url else { preconditionFailure("bad URL")}
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request2) { data, response, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let data = data,
+                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+            
+            let users = json as! [String: Any]
+            
+            let response = users["response"] as! [String: Any]
+            let items = response["items"] as! [Any]
+            for item in items {
+                let group = item as! [String: Any]
+                let id = group["id"] as! Int
+                let name = group["name"] as! String
+                let screenName = group["screen_name"] as! String
+                let photo50 = group["photo_50"] as! String
+                
+                let currentGroup = GroupStructAPI(id: id, name: name, screenName: screenName, photo50: photo50)
+                GroupsDataSingleton.shared.groupsArray?.append(currentGroup)
+                self.groupsArrayFromAPI.append(currentGroup)
+                
+                //                print(currentGroup)
+            }
+            GroupsDataSingleton.shared.groupsArray = self.groupsArrayFromAPI
+            print(GroupsDataSingleton.shared.groupsArray as Any)
+            
+        }
+        task.resume()
+    }
+    
+    func loadGroupsWithParsingWithPhoto() {
+        
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "api.vk.com"
+        urlComponents.path = "/method/groups.get"
+        urlComponents.queryItems = [
+            URLQueryItem(name: "access_token", value: Session.shared.token!),
+            URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
+            URLQueryItem(name: "extended", value: "1"),
+//            URLQueryItem(name: "count", value: "3"),
+            URLQueryItem(name: "v", value: "5.107")]
+        
+        guard let url = urlComponents.url else { preconditionFailure("bad URL")}
+        var request2 = URLRequest(url: url)
+        request2.httpMethod = "GET"
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request2) { data, response, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let data = data,
+                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+            
+            let groups = json as! [String: Any]
+            
+            let response = groups["response"] as! [String: Any]
+            let items = response["items"] as! [Any]
+            for item in items {
+                let group = item as! [String: Any]
+                let id = group["id"] as! Int
+                let name = group["name"] as! String
+                let screenName = group["screen_name"] as! String
+                let photo100 = group["photo_100"] as! String
+//                let ourURL = URL(string: photo100)
+//                var photoAsImage: UIImage?
+                
+                
+                // легкий путь добыть фото
+//                DispatchQueue.global().async {
+//                    guard let imageData = try? Data(contentsOf: ourURL!) else { return }
+//                    let image = UIImage(data: imageData)
+//                    DispatchQueue.main.async {
+//                        photoAsImage = image
+//                        let curGrWithPhoto = GroupStructAPIWithPhoto(id: id, name: name, screenName: screenName, photo50: photoAsImage!)
+//                        self.groupsArrayFromAPIWithPhoto.append(curGrWithPhoto)
+//                    }
+//                    GrDatSingWithPhoto.shared.groupsArray = self.groupsArrayFromAPIWithPhoto
+//                    print(GrDatSingWithPhoto.shared.groupsArray as Any)
+//                }
+                
+                // трудный  путь добыть фото
+                self.fetchImage(from: photo100, completionHandler: { (imageData) in
+                    if let data = imageData {
+                        DispatchQueue.main.async {
+                            let img = UIImage(data: data)
+                            let curGrWithPhoto = GroupStructAPIWithPhoto(id: id, name: name, screenName: screenName, photo100: img!)
+                            self.groupsArrayFromAPIWithPhoto.append(curGrWithPhoto)
+                            GrDatSingWithPhoto.shared.groupsArray = self.groupsArrayFromAPIWithPhoto
+                            print(GrDatSingWithPhoto.shared.groupsArray as Any)
+                        }
+                    } else {
+                        print("Error loading image");
+                    }
+                })
+                
+                
+                let currentGroup = GroupStructAPI(id: id, name: name, screenName: screenName, photo50: photo100)
+                
+                
+                
+                self.groupsArrayFromAPI.append(currentGroup)
+                
+            }
+            GroupsDataSingleton.shared.groupsArray = self.groupsArrayFromAPI
+            
+            //                print(GroupsDataSingleton.shared.groupsArray as Any)
+            
+            
+        }
+        task.resume()
+    }
+    
+
+        func loadFriendsWithParsingWithPhoto() {
+            var friendsArrayParsing: [FriendStruct] = []
+            
+            var urlComponents = URLComponents()
+            urlComponents.scheme = "https"
+            urlComponents.host = "api.vk.com"
+            urlComponents.path = "/method/friends.get"
+            urlComponents.queryItems = [
+                URLQueryItem(name: "access_token", value: Session.shared.token!),
+                URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
+                URLQueryItem(name: "order", value: "random"),
+                URLQueryItem(name: "count", value: "10"),
+                URLQueryItem(name: "fields", value: "photo_100"),
+                URLQueryItem(name: "v", value: "5.107")]
+            
+            guard let url = urlComponents.url else { preconditionFailure("bad URL")}
+            var request2 = URLRequest(url: url)
+            request2.httpMethod = "GET"
+            let session = URLSession.shared
+            let task = session.dataTask(with: request2) { data, response, error in
+                
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                guard let data = data,
+                    let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+                let friends = json as! [String: Any]
+                let response = friends["response"] as! [String: Any]
+                let items = response["items"] as! [Any]
+                for item in items {
+                    let friend = item as! [String: Any]
+                    let id = friend["id"] as! Int
+                    let firstName = friend["first_name"] as! String
+                    let lastName = friend["last_name"] as! String
+                    let photo100 = friend["photo_100"] as! String
+   
+                    // фетчим фото
+                    self.fetchImage(from: photo100, completionHandler: { (imageData) in
+                        if let data = imageData {
+                            DispatchQueue.main.async {
+                                let img = UIImage(data: data)
+                                let currentFriend = FriendStruct(id: id, name: firstName, lastName: lastName, photo100: img!)
+                                friendsArrayParsing.append(currentFriend)
+                                FriendsDataSingleton.shared.friendsArray = friendsArrayParsing
+                                print(FriendsDataSingleton.shared.friendsArray as Any)
+                                print(FriendsDataSingleton.shared.friendsArray?.count as Any)
+                            }
+                        } else {
+                            print("Error loading image");
+                        }
+                    })
+                }
+            }
+            task.resume()
+        }
+    
+    func fetchImage(from urlString: String, completionHandler: @escaping (_ data: Data?) -> ()) {
+        let session = URLSession.shared
+        let url = URL(string: urlString)
+            
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+            if error != nil {
+                print("Error fetching the image! 😢")
+                completionHandler(nil)
+            } else {
+                completionHandler(data)
+            }
+        }
+        dataTask.resume()
+    }
+    
     
 }
+
