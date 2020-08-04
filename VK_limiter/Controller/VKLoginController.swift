@@ -22,25 +22,6 @@ class VKLoginController: UIViewController {
         }
     }
     
-    // функция для подгрузки фото
-    //    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-    //        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    //    }
-    //
-    //    func downloadImage(from ourUrl: URL) -> UIImage {
-    //        var image: UIImage?
-    //        getData(from: ourUrl) { data, response, error in
-    //                    guard let data = data, error == nil else { return }
-    //                    print(response?.suggestedFilename ?? ourUrl.lastPathComponent)
-    //
-    //            DispatchQueue.main.async() { [weak self] in
-    //                        image = UIImage(data: data)
-    //                    }
-    //                }
-    //        return image ?? UIImage(named: "empty_photo")!
-    //    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,23 +61,15 @@ extension VKLoginController: WKNavigationDelegate {
                 dict[key] = value
                 return dict
         }
-        //        print(params)
         
         guard let tokenn = params["access_token"], let userIdd = Int(params["user_id"]!) else {
             decisionHandler(.cancel)
             return
         }
-        //        self.token = tokenn
         Session.shared.token = tokenn
         Session.shared.userId = userIdd
         print("session token: \(Session.shared.token!)")
-        //        print("token:\(self.token ?? "")"/* , userId: \(userId)*/)
         
-        //loadGroupsSimple()
-        //searchGroups()
-        //        loadFriends()
-        //photosGetAll()
-        //        loadGroupsWithParsing()
         loadGroupsWithParsingWithPhoto()
         loadFriendsWithParsingWithPhoto()
         
@@ -199,30 +172,32 @@ extension VKLoginController: WKNavigationDelegate {
         task.resume()
     }
     
-    func photosGetAll() {
-        
-        var urlComponents2 = URLComponents()
-        urlComponents2.scheme = "https"
-        urlComponents2.host = "api.vk.com"
-        urlComponents2.path = "/method/photos.getAll"
-        urlComponents2.queryItems = [
-            URLQueryItem(name: "access_token", value: Session.shared.token!),
-            URLQueryItem(name: "owner_id", value: "205874265"),
-            URLQueryItem(name: "extended", value: "0"),
-            URLQueryItem(name: "offset", value: "0"),
-            URLQueryItem(name: "count", value: "3"),
-            URLQueryItem(name: "v", value: "5.107")]
-        
-        guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
-        var request2 = URLRequest(url: url)
-        request2.httpMethod = "GET"
-        let session = URLSession.shared
-        let task = session.dataTask(with: request2) { data, response, error in
-            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-            print(json as Any)
-        }
-        task.resume()
-    }
+    
+    
+//    func photosGetAll() {
+//        
+//        var urlComponents2 = URLComponents()
+//        urlComponents2.scheme = "https"
+//        urlComponents2.host = "api.vk.com"
+//        urlComponents2.path = "/method/photos.getAll"
+//        urlComponents2.queryItems = [
+//            URLQueryItem(name: "access_token", value: Session.shared.token!),
+//            URLQueryItem(name: "owner_id", value: "205874265"),
+//            URLQueryItem(name: "extended", value: "0"),
+//            URLQueryItem(name: "offset", value: "0"),
+//            URLQueryItem(name: "count", value: "3"),
+//            URLQueryItem(name: "v", value: "5.107")]
+//        
+//        guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
+//        var request2 = URLRequest(url: url)
+//        request2.httpMethod = "GET"
+//        let session = URLSession.shared
+//        let task = session.dataTask(with: request2) { data, response, error in
+//            let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+//            print(json as Any)
+//        }
+//        task.resume()
+//    }
     
     
     func loadGroupsWithParsing() {
@@ -419,6 +394,63 @@ extension VKLoginController: WKNavigationDelegate {
             }
             task.resume()
         }
+    
+    func loadFriendsWithParsingWithPhotoToRealm() {
+             var friendsArrayParsing: [FriendStruct] = []
+             
+             var urlComponents = URLComponents()
+             urlComponents.scheme = "https"
+             urlComponents.host = "api.vk.com"
+             urlComponents.path = "/method/friends.get"
+             urlComponents.queryItems = [
+                 URLQueryItem(name: "access_token", value: Session.shared.token!),
+                 URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
+                 URLQueryItem(name: "order", value: "random"),
+                 URLQueryItem(name: "count", value: "10"),
+                 URLQueryItem(name: "fields", value: "photo_100"),
+                 URLQueryItem(name: "v", value: "5.107")]
+             
+             guard let url = urlComponents.url else { preconditionFailure("bad URL")}
+             var request2 = URLRequest(url: url)
+             request2.httpMethod = "GET"
+             let session = URLSession.shared
+             let task = session.dataTask(with: request2) { data, response, error in
+                 
+                 if let error = error {
+                     print(error.localizedDescription)
+                     return
+                 }
+                 guard let data = data,
+                     let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+                 let friends = json as! [String: Any]
+                 let response = friends["response"] as! [String: Any]
+                 let items = response["items"] as! [Any]
+                 for item in items {
+                     let friend = item as! [String: Any]
+                     let id = friend["id"] as! Int
+                     let firstName = friend["first_name"] as! String
+                     let lastName = friend["last_name"] as! String
+                     let photo100 = friend["photo_100"] as! String
+    
+                     // фетчим фото
+                     self.fetchImage(from: photo100, completionHandler: { (imageData) in
+                         if let data = imageData {
+                             DispatchQueue.main.async {
+                                 let img = UIImage(data: data)
+                                 let currentFriend = FriendStruct(id: id, name: firstName, lastName: lastName, photo100: img!)
+                                 friendsArrayParsing.append(currentFriend)
+                                 FriendsDataSingleton.shared.friendsArray = friendsArrayParsing
+                                 print(FriendsDataSingleton.shared.friendsArray as Any)
+                                 print(FriendsDataSingleton.shared.friendsArray?.count as Any)
+                             }
+                         } else {
+                             print("Error loading image");
+                         }
+                     })
+                 }
+             }
+             task.resume()
+         }
     
     func fetchImage(from urlString: String, completionHandler: @escaping (_ data: Data?) -> ()) {
         let session = URLSession.shared
