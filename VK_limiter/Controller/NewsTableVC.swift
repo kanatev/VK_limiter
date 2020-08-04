@@ -17,26 +17,9 @@ class NewsTableVC: UITableViewController {
     
     private var selectedHearts = [IndexPath: Bool]()
     
-    func realmTextSave(){
-        let realm = try! Realm()
-        let setText = RealmText(realmText: "Realm is cool!")
-        
-        try! realm.write(){
-            realm.add(setText)
-        }
-    }
-    
-    func realmTextLoad() -> String {
-        let realm = try! Realm()
-        let textFromRealm = realm.objects(RealmText.self).last
-        return textFromRealm?.realmText ?? "bla"
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        realmTextSave()
-        self.navigationItem.title = realmTextLoad()
-        
+      
 //        tableView.rowHeight = UITableView.automaticDimension
 //        tableView.estimatedRowHeight = 100
     }

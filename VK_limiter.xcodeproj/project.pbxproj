@@ -21,7 +21,6 @@
 		E54CA66C22C8653B00EB78AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E54CA66B22C8653B00EB78AE /* Assets.xcassets */; };
 		E54CA66F22C8653B00EB78AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E54CA66D22C8653B00EB78AE /* LaunchScreen.storyboard */; };
 		E54E251E24D6041000302F89 /* FriendRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54E251D24D6041000302F89 /* FriendRealm.swift */; };
-		E54E252024D608C500302F89 /* RealmText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54E251F24D608C500302F89 /* RealmText.swift */; };
 		E54F2A6E2487B24A005ED225 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54F2A6D2487B24A005ED225 /* WebKit.framework */; };
 		E55D7A762477349800DFD005 /* AnimatorForw.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D7A752477349800DFD005 /* AnimatorForw.swift */; };
 		E55F25F0248582E500F15A0A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55F25EF248582E500F15A0A /* Session.swift */; };
@@ -39,6 +38,8 @@
 		E5AD38132458A4E900B6E0B6 /* XibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5AD38112458A4E900B6E0B6 /* XibCell.xib */; };
 		E5B7BD672486BEEC00F4ACFA /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7BD662486BEEC00F4ACFA /* NetworkingService.swift */; };
 		E5B7BD692486DED700F4ACFA /* VKLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7BD682486DED700F4ACFA /* VKLoginController.swift */; };
+		E5BDF23424D9F79100EA010F /* GroupRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDF23324D9F79100EA010F /* GroupRealm.swift */; };
+		E5BDF23824D9F8C400EA010F /* FriendPhotoRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDF23724D9F8C400EA010F /* FriendPhotoRealm.swift */; };
 		E5BEB5BD2453881300C451F0 /* ShadowView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BEB5BC2453881300C451F0 /* ShadowView3.swift */; };
 		E5BF0DEE22DA5B2B00E74D76 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF0DED22DA5B2B00E74D76 /* FriendsTableViewCell.swift */; };
 		E5C08A58248BCD1700D41323 /* GroupsDataSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C08A57248BCD1700D41323 /* GroupsDataSingleton.swift */; };
@@ -69,7 +70,6 @@
 		E54CA66E22C8653B00EB78AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E54CA67022C8653B00EB78AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54E251D24D6041000302F89 /* FriendRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRealm.swift; sourceTree = "<group>"; };
-		E54E251F24D608C500302F89 /* RealmText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmText.swift; sourceTree = "<group>"; };
 		E54F2A6D2487B24A005ED225 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E55D7A752477349800DFD005 /* AnimatorForw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorForw.swift; sourceTree = "<group>"; };
 		E55F25EF248582E500F15A0A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -87,6 +87,8 @@
 		E5AD38112458A4E900B6E0B6 /* XibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XibCell.xib; sourceTree = "<group>"; };
 		E5B7BD662486BEEC00F4ACFA /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
 		E5B7BD682486DED700F4ACFA /* VKLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginController.swift; sourceTree = "<group>"; };
+		E5BDF23324D9F79100EA010F /* GroupRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRealm.swift; sourceTree = "<group>"; };
+		E5BDF23724D9F8C400EA010F /* FriendPhotoRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPhotoRealm.swift; sourceTree = "<group>"; };
 		E5BEB5BC2453881300C451F0 /* ShadowView3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView3.swift; sourceTree = "<group>"; };
 		E5BF0DED22DA5B2B00E74D76 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
 		E5C08A57248BCD1700D41323 /* GroupsDataSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsDataSingleton.swift; sourceTree = "<group>"; };
@@ -218,6 +220,8 @@
 			isa = PBXGroup;
 			children = (
 				E54E251D24D6041000302F89 /* FriendRealm.swift */,
+				E5BDF23324D9F79100EA010F /* GroupRealm.swift */,
+				E5BDF23724D9F8C400EA010F /* FriendPhotoRealm.swift */,
 				E5AA35CF22D5081F00F5F0A2 /* UserStruct.swift */,
 				E5AA35D122D5082C00F5F0A2 /* GroupStruct.swift */,
 				E510A0A624882A2700EA0A11 /* UserStructAPI.swift */,
@@ -255,7 +259,6 @@
 			isa = PBXGroup;
 			children = (
 				E5C8A5F122D5AE3A008BE120 /* UserData.swift */,
-				E54E251F24D608C500302F89 /* RealmText.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				E5C49DD924705479008F3D41 /* CustomNavController.swift in Sources */,
 				E54E251E24D6041000302F89 /* FriendRealm.swift in Sources */,
 				E5712BFD248BF21800535230 /* FriendStruct.swift in Sources */,
+				E5BDF23424D9F79100EA010F /* GroupRealm.swift in Sources */,
 				E54CA66522C8653B00EB78AE /* AppDelegate.swift in Sources */,
 				E50CE08D2475BD730008B0D3 /* AnimatorBack.swift in Sources */,
 				E510A0A724882A2700EA0A11 /* UserStructAPI.swift in Sources */,
@@ -413,11 +417,11 @@
 				E5F9A7D62468659C00EED089 /* PhotoVC.swift in Sources */,
 				E592D806248BD3AE00D758F8 /* GroupStructAPIWithPhoto.swift in Sources */,
 				E5C49DDF24708977008F3D41 /* AnimatorPop.swift in Sources */,
-				E54E252024D608C500302F89 /* RealmText.swift in Sources */,
 				E5F474F222CCC35B00E73A12 /* AllGroupsTableVC.swift in Sources */,
 				E5C49DD424703917008F3D41 /* Animator.swift in Sources */,
 				E5C8A5F222D5AE3A008BE120 /* UserData.swift in Sources */,
 				E53B4B19248C313900111BA9 /* CurrentFriendPhotoSingleton.swift in Sources */,
+				E5BDF23824D9F8C400EA010F /* FriendPhotoRealm.swift in Sources */,
 				E5C08A58248BCD1700D41323 /* GroupsDataSingleton.swift in Sources */,
 				E5BEB5BD2453881300C451F0 /* ShadowView3.swift in Sources */,
 				E581237222CCBEDA00A938DA /* GroupsTableVC.swift in Sources */,
