@@ -26,7 +26,7 @@ class VKLoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        realmDeleteAll()
+        realmDeleteAll()
         
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
@@ -438,7 +438,10 @@ extension VKLoginController: WKNavigationDelegate {
                 
                 //FriendsDataSingleton.shared.friendsArray = friendsArrayParsing
                 
-                let currentFriend = FriendRealm(id: id, firstName: firstName, lastName: lastName, photo100: photo100)
+                let currentFriendFromAPI = FriendRealm(id: id, firstName: firstName, lastName: lastName, photo100: photo100, avaRealm: "")
+//                let currentFriendFromAPI = FriendRealm(id: id, firstName: firstName, lastName: lastName, photo100: photo100)
+                
+                
 //                friendsArrayParsing.append(currentFriend)
 //                print(currentFriend)
                 
@@ -452,21 +455,21 @@ extension VKLoginController: WKNavigationDelegate {
                 
                 let realm = try! Realm()
 
-                let frrr = realm.objects(FriendRealm.self).filter("id == %@", currentFriend.id).first
-                if frrr != nil {
-                    print("Такой друг есть \(frrr as Any)")
+                let suchFriendInRealm = realm.objects(FriendRealm.self).filter("id == %@", currentFriendFromAPI.id).first
+                if suchFriendInRealm != nil {
+//                    print("Такой друг есть \(suchFriendInRealm as Any)")
                     try! realm.write {
-                        frrr?.firstName = currentFriend.firstName
-                        frrr?.lastName = currentFriend.lastName
-                        frrr?.photo100 = currentFriend.photo100
+                        suchFriendInRealm?.firstName = currentFriendFromAPI.firstName
+                        suchFriendInRealm?.lastName = currentFriendFromAPI.lastName
+                        suchFriendInRealm?.photo100 = currentFriendFromAPI.photo100
                     }
-                    let tmpFr = realm.objects(FriendRealm.self).filter("id == %@", currentFriend.id).first
-                    print("И мы обновили его данные:  \(tmpFr as Any)")
+//                    let tmpFr = realm.objects(FriendRealm.self).filter("id == %@", currentFriendFromAPI.id).first
+//                    print("И мы обновили его данные:  \(tmpFr as Any)")
                 } else {
-                    print("Такого друга нет \(currentFriend)")
+//                    print("Такого друга нет \(currentFriendFromAPI)")
                     try! realm.write {
-                        realm.add(currentFriend)
-                        print("Но теперь есть")
+                        realm.add(currentFriendFromAPI)
+//                        print("Но теперь есть")
                     }
                 }
                 

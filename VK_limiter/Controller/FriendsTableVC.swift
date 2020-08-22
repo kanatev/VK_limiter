@@ -6,9 +6,12 @@
 //  Copyright © 2019 Aleksei Kanatev. All rights reserved.
 //
 import UIKit
+import RealmSwift
 
 @IBDesignable class FriendsTableVC: UITableViewController, UISearchBarDelegate {
     @IBOutlet weak var ourSearchBar: UISearchBar!
+    
+    
     
     var grayView: UIView?
     var dotsView: UIView?
@@ -24,6 +27,12 @@ import UIKit
     var firstCharactersAPI = [Character]()
     var sortedFriendsDictAPI: [Character:[FriendStruct]] = [:]
     
+//    let realm = try! Realm()
+//    var friendsArrayRealm: Results<FriendRealm>?
+    var firstCharactersRealm = [Character]()
+    var sortedFriendsDictRealm: [Character:[FriendRealm]] = [:]
+    
+    
     @IBAction func exitButton(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -33,9 +42,15 @@ import UIKit
         var friendId: Int?
         
         if let indexPath = self.tableView.indexPathForSelectedRow {
-            let ourSec = firstCharactersAPI[indexPath.section]
-            var tmpArray: [FriendStruct] = []
-            for dicct in sortedFriendsDictAPI {
+//            let ourSec = firstCharactersAPI[indexPath.section]
+            let ourSec = firstCharactersRealm[indexPath.section]
+
+//            var tmpArray: [FriendStruct] = []
+            var tmpArray: [FriendRealm] = []
+
+//            for dicct in sortedFriendsDictAPI {
+            for dicct in sortedFriendsDictRealm {
+
                 if dicct.key == ourSec {
                     tmpArray.append(contentsOf: dicct.value)
                 }
@@ -58,8 +73,9 @@ import UIKit
             
             if let indexPath = friendSource.tableView.indexPathForSelectedRow {
                 //                let ourSec = firstCharacters[indexPath.section]
-                let ourSec = firstCharactersAPI[indexPath.section]
-                
+//                let ourSec = firstCharactersAPI[indexPath.section]
+                let ourSec = firstCharactersRealm[indexPath.section]
+
                 //                var tmpArray: [UserStruct] = []
                 //                for dicct in sortedFriendsDict {
                 //                    if dicct.key == ourSec {
@@ -67,8 +83,12 @@ import UIKit
                 //                    }
                 //                }
                 //                friendDestination.ourPerson = tmpArray[indexPath.row]
-                var tmpArray: [FriendStruct] = []
-                for dicct in sortedFriendsDictAPI {
+//                var tmpArray: [FriendStruct] = []
+                var tmpArray: [FriendRealm] = []
+
+//                for dicct in sortedFriendsDictAPI {
+                for dicct in sortedFriendsDictRealm {
+
                     if dicct.key == ourSec {
                         tmpArray.append(contentsOf: dicct.value)
                     }
@@ -182,9 +202,17 @@ import UIKit
         super.viewDidLoad()
         ourSearchBar.delegate = self
         self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
+       
+//        let realm = try! Realm()
+//        self.friendsArrayRealm = { realm.objects(FriendRealm.self) }()
+        
         // объединяем массивы в кортеж и присваиваем результат sort()
-        (firstCharacters, sortedFriendsDict) = sort(friendsArray)
-        (firstCharactersAPI, sortedFriendsDictAPI) = sortFriendsFromAPI(friendsArrayAPI)
+//        (firstCharacters, sortedFriendsDict) = sort(friendsArray)
+//        (firstCharactersAPI, sortedFriendsDictAPI) = sortFriendsFromAPI(friendsArrayAPI)
+//        (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm(friendsArrayRealm!)
+        (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm()
+        
+        
         
         //        self.refreshControl = myRefreshControl
         self.modalPresentationStyle = .fullScreen
@@ -192,6 +220,8 @@ import UIKit
         
         // задаем высоту ячейки
         self.tableView.rowHeight = 80
+        
+        
         
     }
     
@@ -209,15 +239,20 @@ import UIKit
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         //        return firstCharacters.count
-        return firstCharactersAPI.count
+//        return firstCharactersAPI.count
+        return firstCharactersRealm.count
+
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //        let character = firstCharacters[section]
         //        let friendsCount = sortedFriendsDict[character]?.count
         //        return friendsCount ?? 0
-        let character = firstCharactersAPI[section]
-        let friendsCount = sortedFriendsDictAPI[character]?.count
+//        let character = firstCharactersAPI[section]
+//        let friendsCount = sortedFriendsDictAPI[character]?.count
+        let character = firstCharactersRealm[section]
+        let friendsCount = sortedFriendsDictRealm[character]?.count
+        
         return friendsCount ?? 0
     }
     
@@ -230,10 +265,17 @@ import UIKit
         //
         //            return cell
         //        }
-        let character = firstCharactersAPI[indexPath.section]
-        if let friends = sortedFriendsDictAPI[character]{
-            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
-            cell.shadowView.image1 = friends[indexPath.row].photo100
+//        let character = firstCharactersAPI[indexPath.section]
+//        if let friends = sortedFriendsDictAPI[character]{
+//            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
+//            cell.shadowView.image1 = friends[indexPath.row].photo100
+        let character = firstCharactersRealm[indexPath.section]
+        if let friends = sortedFriendsDictRealm[character]{
+            cell.friendNameLabel.text = friends[indexPath.row].firstName + " " + friends[indexPath.row].lastName
+            let imageURL = URL(fileURLWithPath: ""/*dirPath*/).appendingPathComponent("Image2.png")
+            let image = UIImage(contentsOfFile: imageURL.path) ?? UIImage(named: "empty_photo")
+//            cell.shadowView.image1 = friends[indexPath.row].photo100
+            cell.shadowView.image1 = image
             return cell
         }
         return UITableViewCell()
@@ -241,7 +283,9 @@ import UIKit
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //        let character = firstCharacters[section]
-        let character = firstCharactersAPI[section]
+//        let character = firstCharactersAPI[section]
+        let character = firstCharactersRealm[section]
+
         return String(character)
     }
     
@@ -279,6 +323,27 @@ import UIKit
         
         friends.forEach { friend in
             guard let character = friend.first_name.first else { return }
+            if var thisCharFriends = sortedPeople[character] {
+                thisCharFriends.append(friend)
+                sortedPeople[character] = thisCharFriends
+            } else {
+                sortedPeople[character] = [friend]
+                characters.append(character)
+            }
+        }
+        characters.sort()
+        return (characters, sortedPeople)
+    }
+    
+    private func sortFriendsFromRealm() -> (characters: [Character], sortedCharacters: [Character: [FriendRealm]]) {
+        let realm = try! Realm()
+        let ourFriendss: Results<FriendRealm> = { realm.objects(FriendRealm.self) }()
+        var characters = [Character]()
+        var sortedPeople = [Character: [FriendRealm]]()
+        
+        ourFriendss.forEach { friend in
+//            guard let character = friend.first_name.first else { return }
+            guard let character = friend.firstName.first else { return }
             if var thisCharFriends = sortedPeople[character] {
                 thisCharFriends.append(friend)
                 sortedPeople[character] = thisCharFriends
@@ -407,6 +472,9 @@ import UIKit
             return false
         }
     }
+    
+    
+
     
 }
 

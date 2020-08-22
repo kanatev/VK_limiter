@@ -11,7 +11,9 @@ import UIKit
 class FriendCollectionVC: UICollectionViewController {
 
 //    var ourPerson: UserStruct?
-    var ourPerson: FriendStruct?
+//    var ourPerson: FriendStruct?
+    var ourPerson: FriendRealm?
+
 
 //    var photoArray: [UIImage] = []
     var photoArray: [CurrentFriendPhotoStruct] = []
@@ -20,7 +22,7 @@ class FriendCollectionVC: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = ourPerson!.first_name + " " + ourPerson!.last_name
+        title = ourPerson!.firstName + " " + ourPerson!.lastName
 //        print(ourPerson as Any)
     }
 
