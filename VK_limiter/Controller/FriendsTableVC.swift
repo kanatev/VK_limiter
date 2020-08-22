@@ -212,6 +212,7 @@ import RealmSwift
 //        (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm(friendsArrayRealm!)
         (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm()
         
+        fetchAndSavePhotos()
         
         
         //        self.refreshControl = myRefreshControl
@@ -270,10 +271,25 @@ import RealmSwift
 //            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
 //            cell.shadowView.image1 = friends[indexPath.row].photo100
         let character = firstCharactersRealm[indexPath.section]
+        
         if let friends = sortedFriendsDictRealm[character]{
             cell.friendNameLabel.text = friends[indexPath.row].firstName + " " + friends[indexPath.row].lastName
-            let imageURL = URL(fileURLWithPath: ""/*dirPath*/).appendingPathComponent("Image2.png")
-            let image = UIImage(contentsOfFile: imageURL.path) ?? UIImage(named: "empty_photo")
+            
+//            print("print: \(friends[indexPath.row].avaRealm)")
+            
+            var image = UIImage(named: "empty_photo")
+            
+            if friends[indexPath.row].avaRealm != "" {
+                let imageURL = URL(string: friends[indexPath.row].avaRealm)
+                do {
+                    let imageData = try Data(contentsOf: imageURL!)
+                    image = UIImage(data: imageData)
+                }
+                catch {
+                    print(error)
+                }
+            }
+                        
 //            cell.shadowView.image1 = friends[indexPath.row].photo100
             cell.shadowView.image1 = image
             return cell
@@ -289,9 +305,9 @@ import RealmSwift
         return String(character)
     }
     
-    //        override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //            tableView.dequeueReusableHeaderFooterView(withIdentifier: )
-    //        }
+//            override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//                tableView.dequeueReusableHeaderFooterView(withIdentifier: )
+//            }
     
     
     // Func for sorting friends
@@ -400,9 +416,10 @@ import RealmSwift
         }
     }
     
+    //
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         //        let arrWithSectionNames = firstCharacters.map { String($0) }
-        let arrWithSectionNames = firstCharactersAPI.map { String($0) }
+        let arrWithSectionNames = firstCharactersRealm.map { String($0) }
         //        var arrWithDots: [String] = []
         //        for index in arrWithSectionNames.indices {
         //            if index == 0 || index % 2 == 0 {
@@ -473,8 +490,46 @@ import RealmSwift
         }
     }
     
+    // фетчим и сохраняем аватарки
+    func fetchAndSavePhotos(){
+        
+        // получаем друзей из Realm в виде объектов
+        let realm = try! Realm()
+        let ourFriendss: Results<FriendRealm> = { realm.objects(FriendRealm.self) }()
+        
+        ourFriendss.forEach { friend in
+            
+            self.fetchImage(from: friend.photo100, completionHandler: { (imageData) in
+                if let data = imageData {
+                    DispatchQueue.main.async {
+                        let img = UIImage(data: data)
+                        let nameForFile = "ava_" + String(friend.id) + ".png"
+                        let fileUrl = self.getDocumentsDir().appendingPathComponent(nameForFile)
+                        
+                        guard let data = img?.pngData() else {return}
+                        do {
+                            try? data.write(to: fileUrl)
+                        }
+                        
+                        try! realm.write {
+                            friend.avaRealm = fileUrl.absoluteString
+                            print(friend.avaRealm)
+                            self.tableView.reloadData()
+                        }
+                    }
+                } else {
+                    print("Error loading image");
+                }
+            })
+        }
+//        tableView.reloadData()
+    }
     
-
+    
+    // вспомог. фун. доступа к директории
+    func getDocumentsDir() -> URL {
+        return FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask)[0]
+    }
     
 }
 

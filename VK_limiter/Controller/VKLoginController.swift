@@ -410,7 +410,7 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
             URLQueryItem(name: "order", value: "random"),
-            URLQueryItem(name: "count", value: "10"),
+            URLQueryItem(name: "count", value: "100"),
             URLQueryItem(name: "fields", value: "photo_100"),
             URLQueryItem(name: "v", value: "5.107")]
         
@@ -475,16 +475,17 @@ extension VKLoginController: WKNavigationDelegate {
                 
                 
                 // фетчим фото
-                //                self.fetchImage(from: photo100, completionHandler: { (imageData) in
-                //                    if let data = imageData {
-                //                        DispatchQueue.main.async {
-                //                            let img = UIImage(data: data)
-                //
-                //                        }
-                //                    } else {
-                //                        print("Error loading image");
-                //                    }
-                //                })
+//                self.fetchImage(from: photo100, completionHandler: { (imageData) in
+//                    if let data = imageData {
+//                        DispatchQueue.main.async {
+//                            let img = UIImage(data: data)
+//
+//                        }
+//                    } else {
+//                        print("Error loading image");
+//                    }
+//                })
+                
             }
         }
         task.resume()
