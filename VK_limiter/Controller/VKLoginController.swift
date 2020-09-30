@@ -26,19 +26,22 @@ class VKLoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        realmDeleteAll()
+//        realmDeleteAll()
         
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "oauth.vk.com"
+//        urlComponents.path = "/authorize"
         urlComponents.path = "/authorize"
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: "7502536"),
+            URLQueryItem(name: "client_id", value: "7610944"),
             URLQueryItem(name: "display", value: "mobile"),
+//            URLQueryItem(name: "display", value: "page"),
             URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
             URLQueryItem(name: "scope", value: "262150"),
+//            URLQueryItem(name: "scope", value: "friends"),
             URLQueryItem(name: "response_type", value: "token"),
-            URLQueryItem(name: "v", value: "5.85")
+            URLQueryItem(name: "v", value: "5.124")
         ]
         
         let request = URLRequest(url: urlComponents.url!)
@@ -73,8 +76,8 @@ extension VKLoginController: WKNavigationDelegate {
         Session.shared.userId = userIdd
         print("session token: \(Session.shared.token!)")
         
-        loadGroupsWithParsingWithPhoto()
-        loadFriendsWithParsingWithPhoto()
+//        loadGroupsWithParsingWithPhoto()
+//        loadFriendsWithParsingWithPhoto()
         loadFriendsWithParsingWithPhotoToRealm()
         
         performSegue(withIdentifier: "vkLogin", sender: nil)
@@ -90,7 +93,7 @@ extension VKLoginController: WKNavigationDelegate {
         urlComponents2.queryItems = [
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "extended", value: "1"),
-            URLQueryItem(name: "v", value: "5.107")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
@@ -99,7 +102,7 @@ extension VKLoginController: WKNavigationDelegate {
         let session = URLSession.shared
         let task = session.dataTask(with: request2) { data, response, error in
             let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-            //            print(json as Any)
+                        print(json as Any)
         }
         task.resume()
     }
@@ -114,7 +117,7 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "q", value: "bond"),
             URLQueryItem(name: "count", value: "5"),
-            URLQueryItem(name: "v", value: "5.85")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
@@ -123,7 +126,7 @@ extension VKLoginController: WKNavigationDelegate {
         let session = URLSession.shared
         let task = session.dataTask(with: request2) { data, response, error in
             let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-            //            print(json as Any)
+                        print(json as Any)
         }
         task.resume()
     }
@@ -142,7 +145,7 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "offset", value: "5"),
             URLQueryItem(name: "fields", value: "nickname"),
             URLQueryItem(name: "name_case", value: "nom"),
-            URLQueryItem(name: "v", value: "5.107")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         guard let url = urlComponents2.url else { preconditionFailure("bad URL")}
         var request2 = URLRequest(url: url)
@@ -157,7 +160,7 @@ extension VKLoginController: WKNavigationDelegate {
             }
             guard let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
-            //            print(json)
+                        print(json)
             
             let users = json as! [String: Any]
             
@@ -169,7 +172,7 @@ extension VKLoginController: WKNavigationDelegate {
                 let surname = friend["last_name"] as! String
                 
                 let user = UserStructAPI(name: name, lastName: surname)
-                //                print(user)
+                                print(user)
                 
             }
         }
@@ -215,7 +218,7 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
             URLQueryItem(name: "extended", value: "1"),
             URLQueryItem(name: "count", value: "50"),
-            URLQueryItem(name: "v", value: "5.107")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         guard let url = urlComponents.url else { preconditionFailure("bad URL")}
         var request2 = URLRequest(url: url)
@@ -266,7 +269,7 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
             URLQueryItem(name: "extended", value: "1"),
             //            URLQueryItem(name: "count", value: "3"),
-            URLQueryItem(name: "v", value: "5.107")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         guard let url = urlComponents.url else { preconditionFailure("bad URL")}
         var request2 = URLRequest(url: url)
@@ -355,7 +358,7 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "order", value: "random"),
             URLQueryItem(name: "count", value: "10"),
             URLQueryItem(name: "fields", value: "photo_100"),
-            URLQueryItem(name: "v", value: "5.107")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         guard let url = urlComponents.url else { preconditionFailure("bad URL")}
         var request2 = URLRequest(url: url)
@@ -402,6 +405,7 @@ extension VKLoginController: WKNavigationDelegate {
     func loadFriendsWithParsingWithPhotoToRealm() {
 //        var friendsArrayParsing: [FriendRealm] = []
         
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "api.vk.com"
@@ -410,9 +414,9 @@ extension VKLoginController: WKNavigationDelegate {
             URLQueryItem(name: "access_token", value: Session.shared.token!),
             URLQueryItem(name: "user_id", value: String(Session.shared.userId!)),
             URLQueryItem(name: "order", value: "random"),
-            URLQueryItem(name: "count", value: "100"),
+//            URLQueryItem(name: "count", value: "100"),
             URLQueryItem(name: "fields", value: "photo_100"),
-            URLQueryItem(name: "v", value: "5.107")]
+            URLQueryItem(name: "v", value: "5.124")]
         
         guard let url = urlComponents.url else { preconditionFailure("bad URL")}
         var request2 = URLRequest(url: url)
@@ -424,6 +428,9 @@ extension VKLoginController: WKNavigationDelegate {
                 print(error.localizedDescription)
                 return
             }
+            
+            DispatchQueue.main.async {
+
             guard let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
             let friends = json as! [String: Any]
@@ -437,6 +444,19 @@ extension VKLoginController: WKNavigationDelegate {
                 let photo100 = friend["photo_100"] as! String
                 
                 //FriendsDataSingleton.shared.friendsArray = friendsArrayParsing
+                
+                // реализация через декодер
+//                guard let data = data else { return }
+//                let decoder = JSONDecoder()
+//
+//                do {
+//                    let users = try decoder.decode([FriendRealm].self, from: data)
+//                    users.forEach { print($0) }
+//                } catch {
+//                    print(error.localizedDescription)
+//                    return
+//                }
+                    
                 
                 let currentFriendFromAPI = FriendRealm(id: id, firstName: firstName, lastName: lastName, photo100: photo100, avaRealm: "")
 //                let currentFriendFromAPI = FriendRealm(id: id, firstName: firstName, lastName: lastName, photo100: photo100)
@@ -472,7 +492,7 @@ extension VKLoginController: WKNavigationDelegate {
 //                        print("Но теперь есть")
                     }
                 }
-                
+                    }
                 
                 // фетчим фото
 //                self.fetchImage(from: photo100, completionHandler: { (imageData) in
@@ -488,7 +508,9 @@ extension VKLoginController: WKNavigationDelegate {
                 
             }
         }
+        
         task.resume()
+        
     }
     
     func realmDeleteAll(){

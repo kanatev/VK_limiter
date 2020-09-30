@@ -15,11 +15,7 @@ class FriendRealm: Object {
     @objc dynamic var lastName: String = ""
     @objc dynamic var photo100: String = ""
     @objc dynamic var avaRealm: String = ""
-    
-//    override static func primaryKey() -> String? {
-//        return "id"
-//    }
-    
+
     convenience init(id: Int, firstName: String, lastName: String, photo100: String, avaRealm: String) {
         self.init()
         self.id = id
@@ -27,5 +23,9 @@ class FriendRealm: Object {
         self.lastName = lastName
         self.photo100 = photo100
         self.avaRealm = avaRealm
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
 }

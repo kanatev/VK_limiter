@@ -180,20 +180,20 @@ import RealmSwift
     
     // Оставлю для новостной ленты
     //--------------------------------------------------------------------
-    // refresh control
-    //    var myRefreshControl: UIRefreshControl {
-    //        let refControl = UIRefreshControl()
-    //        refControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
-    //        return refControl
-    //    }
-    
-    // action для refresh control
-    //    @objc private func refresh(sender: UIRefreshControl) {
-    //        let str = "Новый друг номер: \(friendsArray.count)"
-    //        friendsArray.append(str)
-    //        self.tableView.reloadData()
-    //        sender.endRefreshing()
-    //    }
+//     refresh control
+//        var myRefreshControl: UIRefreshControl {
+//            let refControl = UIRefreshControl()
+//            refControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+//            return refControl
+//        }
+//
+////     action для refresh control
+//        @objc private func refresh(sender: UIRefreshControl) {
+//            let str = "Новый друг номер: \(friendsArray.count)"
+//            friendsArray.append(str)
+//            self.tableView.reloadData()
+//            sender.endRefreshing()
+//        }
     //--------------------------------------------------------------------
     
     
@@ -201,7 +201,7 @@ import RealmSwift
     override func viewDidLoad() {
         super.viewDidLoad()
         ourSearchBar.delegate = self
-        self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
+//        self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
        
 //        let realm = try! Realm()
 //        self.friendsArrayRealm = { realm.objects(FriendRealm.self) }()
@@ -227,6 +227,9 @@ import RealmSwift
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        self.tableView.reloadData()
+        
         self.animationPerformed = false
         if self.grayView != nil {
             self.grayView!.removeFromSuperview()
@@ -514,7 +517,7 @@ import RealmSwift
                         try! realm.write {
                             friend.avaRealm = fileUrl.absoluteString
                             print(friend.avaRealm)
-                            self.tableView.reloadData()
+//                            self.tableView.reloadData()
                         }
                     }
                 } else {
