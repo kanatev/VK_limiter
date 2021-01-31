@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A3A51929CB70A95FC29DF6E /* Pods_VK_limiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 950D7A68FFB19A4ECB1E0CC8 /* Pods_VK_limiter.framework */; };
 		E501C657245DB63600729270 /* NewsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C656245DB63600729270 /* NewsTableVC.swift */; };
 		E501C659245DC35500729270 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C658245DC35500729270 /* NewsCell.swift */; };
 		E50CE08D2475BD730008B0D3 /* AnimatorBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CE08C2475BD730008B0D3 /* AnimatorBack.swift */; };
@@ -21,7 +20,6 @@
 		E54CA66C22C8653B00EB78AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E54CA66B22C8653B00EB78AE /* Assets.xcassets */; };
 		E54CA66F22C8653B00EB78AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E54CA66D22C8653B00EB78AE /* LaunchScreen.storyboard */; };
 		E54E251E24D6041000302F89 /* FriendRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54E251D24D6041000302F89 /* FriendRealm.swift */; };
-		E54F2A6E2487B24A005ED225 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54F2A6D2487B24A005ED225 /* WebKit.framework */; };
 		E55D7A762477349800DFD005 /* AnimatorForw.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D7A752477349800DFD005 /* AnimatorForw.swift */; };
 		E55F25F0248582E500F15A0A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55F25EF248582E500F15A0A /* Session.swift */; };
 		E56D3E2022D4D77D003D67D2 /* FriendsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D3E1F22D4D77D003D67D2 /* FriendsCollectionViewCell.swift */; };
@@ -32,6 +30,8 @@
 		E59151FE24899633003694C4 /* GroupStructAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59151FD24899633003694C4 /* GroupStructAPI.swift */; };
 		E592D806248BD3AE00D758F8 /* GroupStructAPIWithPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592D805248BD3AE00D758F8 /* GroupStructAPIWithPhoto.swift */; };
 		E592D808248BD43400D758F8 /* GrDatSingWithPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592D807248BD43400D758F8 /* GrDatSingWithPhoto.swift */; };
+		E5A1F9B725C0AEBD00CE5316 /* Pods_VK_limiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBD2722AAFC9F9E3E3BADBEE /* Pods_VK_limiter.framework */; };
+		E5A1F9BA25C0AEC000CE5316 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54F2A6D2487B24A005ED225 /* WebKit.framework */; };
 		E5AA35D022D5081F00F5F0A2 /* UserStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA35CF22D5081F00F5F0A2 /* UserStruct.swift */; };
 		E5AA35D222D5082C00F5F0A2 /* GroupStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA35D122D5082C00F5F0A2 /* GroupStruct.swift */; };
 		E5AD38122458A4E900B6E0B6 /* XibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD38102458A4E900B6E0B6 /* XibCell.swift */; };
@@ -53,8 +53,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1E5FDB785E3721F967D02CDD /* Pods-VK_limiter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK_limiter.debug.xcconfig"; path = "Target Support Files/Pods-VK_limiter/Pods-VK_limiter.debug.xcconfig"; sourceTree = "<group>"; };
-		950D7A68FFB19A4ECB1E0CC8 /* Pods_VK_limiter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VK_limiter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		474C0512EF3EA7B19D8E55FD /* Pods-VK_limiter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK_limiter.debug.xcconfig"; path = "Target Support Files/Pods-VK_limiter/Pods-VK_limiter.debug.xcconfig"; sourceTree = "<group>"; };
+		BBD2722AAFC9F9E3E3BADBEE /* Pods_VK_limiter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VK_limiter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E012BD5C312F020B7AE46132 /* Pods-VK_limiter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK_limiter.release.xcconfig"; path = "Target Support Files/Pods-VK_limiter/Pods-VK_limiter.release.xcconfig"; sourceTree = "<group>"; };
 		E501C656245DB63600729270 /* NewsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableVC.swift; sourceTree = "<group>"; };
 		E501C658245DC35500729270 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		E50CE08C2475BD730008B0D3 /* AnimatorBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBack.swift; sourceTree = "<group>"; };
@@ -99,7 +100,6 @@
 		E5C8A5F122D5AE3A008BE120 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		E5F474F122CCC35B00E73A12 /* AllGroupsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableVC.swift; sourceTree = "<group>"; };
 		E5F9A7D52468659C00EED089 /* PhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVC.swift; sourceTree = "<group>"; };
-		F43E70CD53DC7967AFF2C4BA /* Pods-VK_limiter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VK_limiter.release.xcconfig"; path = "Target Support Files/Pods-VK_limiter/Pods-VK_limiter.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,14 +107,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E54F2A6E2487B24A005ED225 /* WebKit.framework in Frameworks */,
-				9A3A51929CB70A95FC29DF6E /* Pods_VK_limiter.framework in Frameworks */,
+				E5A1F9BA25C0AEC000CE5316 /* WebKit.framework in Frameworks */,
+				E5A1F9B725C0AEBD00CE5316 /* Pods_VK_limiter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A863AE8C1B2798C6B413D340 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				474C0512EF3EA7B19D8E55FD /* Pods-VK_limiter.debug.xcconfig */,
+				E012BD5C312F020B7AE46132 /* Pods-VK_limiter.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E501C65A245DC35F00729270 /* News */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,7 +172,7 @@
 				E54CA66322C8653B00EB78AE /* VK_limiter */,
 				E54CA66222C8653B00EB78AE /* Products */,
 				E54F2A6C2487B24A005ED225 /* Frameworks */,
-				FA34386281D64696678590EA /* Pods */,
+				A863AE8C1B2798C6B413D340 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,7 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				E54F2A6D2487B24A005ED225 /* WebKit.framework */,
-				950D7A68FFB19A4ECB1E0CC8 /* Pods_VK_limiter.framework */,
+				BBD2722AAFC9F9E3E3BADBEE /* Pods_VK_limiter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -263,15 +272,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		FA34386281D64696678590EA /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1E5FDB785E3721F967D02CDD /* Pods-VK_limiter.debug.xcconfig */,
-				F43E70CD53DC7967AFF2C4BA /* Pods-VK_limiter.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -279,11 +279,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E54CA67322C8653B00EB78AE /* Build configuration list for PBXNativeTarget "VK_limiter" */;
 			buildPhases = (
-				FFFDE4881561B8A922152649 /* [CP] Check Pods Manifest.lock */,
+				FF7FDA99EE95FF63207808CD /* [CP] Check Pods Manifest.lock */,
 				E54CA65D22C8653B00EB78AE /* Sources */,
 				E54CA65E22C8653B00EB78AE /* Frameworks */,
 				E54CA65F22C8653B00EB78AE /* Resources */,
-				70B90E220EF49D8C24B3DBF8 /* [CP] Embed Pods Frameworks */,
+				4C12720162BBFE72A3AF289E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -342,7 +342,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		70B90E220EF49D8C24B3DBF8 /* [CP] Embed Pods Frameworks */ = {
+		4C12720162BBFE72A3AF289E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -359,7 +359,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VK_limiter/Pods-VK_limiter-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FFFDE4881561B8A922152649 /* [CP] Check Pods Manifest.lock */ = {
+		FF7FDA99EE95FF63207808CD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -570,7 +570,7 @@
 		};
 		E54CA67422C8653B00EB78AE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1E5FDB785E3721F967D02CDD /* Pods-VK_limiter.debug.xcconfig */;
+			baseConfigurationReference = 474C0512EF3EA7B19D8E55FD /* Pods-VK_limiter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -590,7 +590,7 @@
 		};
 		E54CA67522C8653B00EB78AE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F43E70CD53DC7967AFF2C4BA /* Pods-VK_limiter.release.xcconfig */;
+			baseConfigurationReference = E012BD5C312F020B7AE46132 /* Pods-VK_limiter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

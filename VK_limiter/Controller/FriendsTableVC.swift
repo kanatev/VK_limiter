@@ -18,7 +18,7 @@ import RealmSwift
     
     var animationPerformed = false
     var currentFriendPhotos: [CurrentFriendPhotoStruct] = []
-
+    
     var friendsArray = UserStruct.createFriendsArray()
     var firstCharacters = [Character]()
     var sortedFriendsDict: [Character:[UserStruct]] = [:]
@@ -27,8 +27,8 @@ import RealmSwift
     var firstCharactersAPI = [Character]()
     var sortedFriendsDictAPI: [Character:[FriendStruct]] = [:]
     
-//    let realm = try! Realm()
-//    var friendsArrayRealm: Results<FriendRealm>?
+    //    let realm = try! Realm()
+    //    var friendsArrayRealm: Results<FriendRealm>?
     var firstCharactersRealm = [Character]()
     var sortedFriendsDictRealm: [Character:[FriendRealm]] = [:]
     
@@ -42,22 +42,22 @@ import RealmSwift
         var friendId: Int?
         
         if let indexPath = self.tableView.indexPathForSelectedRow {
-//            let ourSec = firstCharactersAPI[indexPath.section]
+            //            let ourSec = firstCharactersAPI[indexPath.section]
             let ourSec = firstCharactersRealm[indexPath.section]
-
-//            var tmpArray: [FriendStruct] = []
+            
+            //            var tmpArray: [FriendStruct] = []
             var tmpArray: [FriendRealm] = []
-
-//            for dicct in sortedFriendsDictAPI {
+            
+            //            for dicct in sortedFriendsDictAPI {
             for dicct in sortedFriendsDictRealm {
-
+                
                 if dicct.key == ourSec {
                     tmpArray.append(contentsOf: dicct.value)
                 }
             }
             friendId = tmpArray[indexPath.row].id
         }
-
+        
         
         animation()
         photosGetAll(friendId: friendId!)
@@ -73,9 +73,9 @@ import RealmSwift
             
             if let indexPath = friendSource.tableView.indexPathForSelectedRow {
                 //                let ourSec = firstCharacters[indexPath.section]
-//                let ourSec = firstCharactersAPI[indexPath.section]
+                //                let ourSec = firstCharactersAPI[indexPath.section]
                 let ourSec = firstCharactersRealm[indexPath.section]
-
+                
                 //                var tmpArray: [UserStruct] = []
                 //                for dicct in sortedFriendsDict {
                 //                    if dicct.key == ourSec {
@@ -83,18 +83,18 @@ import RealmSwift
                 //                    }
                 //                }
                 //                friendDestination.ourPerson = tmpArray[indexPath.row]
-//                var tmpArray: [FriendStruct] = []
+                //                var tmpArray: [FriendStruct] = []
                 var tmpArray: [FriendRealm] = []
-
-//                for dicct in sortedFriendsDictAPI {
+                
+                //                for dicct in sortedFriendsDictAPI {
                 for dicct in sortedFriendsDictRealm {
-
+                    
                     if dicct.key == ourSec {
                         tmpArray.append(contentsOf: dicct.value)
                     }
                 }
                 friendDestination.ourPerson = tmpArray[indexPath.row]
-//                animation()
+                //                animation()
                 friendDestination.photoArray = CurrentFriendPhotoSingleton.shared.currentFriendPhoto!
                 print(friendDestination.photoArray)
             }
@@ -128,7 +128,7 @@ import RealmSwift
                 return
             }
             guard let data = data,
-                let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
+                  let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) else { return }
             let friends = json as! [String: Any]
             let response = friends["response"] as! [String: Any]
             let items = response["items"] as! [Any]
@@ -152,7 +152,7 @@ import RealmSwift
                             let currentPhoto = CurrentFriendPhotoStruct(id: id, photo: img!)
                             friendPhotoArray.append(currentPhoto)
                             CurrentFriendPhotoSingleton.shared.currentFriendPhoto = friendPhotoArray
-//                            print(friendPhotoArray)
+                            //                            print(friendPhotoArray)
                         }
                     } else {
                         print("Error loading image");
@@ -180,20 +180,20 @@ import RealmSwift
     
     // Оставлю для новостной ленты
     //--------------------------------------------------------------------
-//     refresh control
-//        var myRefreshControl: UIRefreshControl {
-//            let refControl = UIRefreshControl()
-//            refControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
-//            return refControl
-//        }
-//
-////     action для refresh control
-//        @objc private func refresh(sender: UIRefreshControl) {
-//            let str = "Новый друг номер: \(friendsArray.count)"
-//            friendsArray.append(str)
-//            self.tableView.reloadData()
-//            sender.endRefreshing()
-//        }
+    //     refresh control
+    //        var myRefreshControl: UIRefreshControl {
+    //            let refControl = UIRefreshControl()
+    //            refControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+    //            return refControl
+    //        }
+    //
+    ////     action для refresh control
+    //        @objc private func refresh(sender: UIRefreshControl) {
+    //            let str = "Новый друг номер: \(friendsArray.count)"
+    //            friendsArray.append(str)
+    //            self.tableView.reloadData()
+    //            sender.endRefreshing()
+    //        }
     //--------------------------------------------------------------------
     
     
@@ -201,15 +201,15 @@ import RealmSwift
     override func viewDidLoad() {
         super.viewDidLoad()
         ourSearchBar.delegate = self
-//        self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
-       
-//        let realm = try! Realm()
-//        self.friendsArrayRealm = { realm.objects(FriendRealm.self) }()
+        //        self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
+        
+        //        let realm = try! Realm()
+        //        self.friendsArrayRealm = { realm.objects(FriendRealm.self) }()
         
         // объединяем массивы в кортеж и присваиваем результат sort()
-//        (firstCharacters, sortedFriendsDict) = sort(friendsArray)
-//        (firstCharactersAPI, sortedFriendsDictAPI) = sortFriendsFromAPI(friendsArrayAPI)
-//        (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm(friendsArrayRealm!)
+        //        (firstCharacters, sortedFriendsDict) = sort(friendsArray)
+        //        (firstCharactersAPI, sortedFriendsDictAPI) = sortFriendsFromAPI(friendsArrayAPI)
+        //        (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm(friendsArrayRealm!)
         (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm()
         
         fetchAndSavePhotos()
@@ -243,17 +243,17 @@ import RealmSwift
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         //        return firstCharacters.count
-//        return firstCharactersAPI.count
+        //        return firstCharactersAPI.count
         return firstCharactersRealm.count
-
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //        let character = firstCharacters[section]
         //        let friendsCount = sortedFriendsDict[character]?.count
         //        return friendsCount ?? 0
-//        let character = firstCharactersAPI[section]
-//        let friendsCount = sortedFriendsDictAPI[character]?.count
+        //        let character = firstCharactersAPI[section]
+        //        let friendsCount = sortedFriendsDictAPI[character]?.count
         let character = firstCharactersRealm[section]
         let friendsCount = sortedFriendsDictRealm[character]?.count
         
@@ -269,31 +269,45 @@ import RealmSwift
         //
         //            return cell
         //        }
-//        let character = firstCharactersAPI[indexPath.section]
-//        if let friends = sortedFriendsDictAPI[character]{
-//            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
-//            cell.shadowView.image1 = friends[indexPath.row].photo100
+        //        let character = firstCharactersAPI[indexPath.section]
+        //        if let friends = sortedFriendsDictAPI[character]{
+        //            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
+        //            cell.shadowView.image1 = friends[indexPath.row].photo100
         let character = firstCharactersRealm[indexPath.section]
         
         if let friends = sortedFriendsDictRealm[character]{
             cell.friendNameLabel.text = friends[indexPath.row].firstName + " " + friends[indexPath.row].lastName
             
-//            print("print: \(friends[indexPath.row].avaRealm)")
+            //            print("print: \(friends[indexPath.row].avaRealm)")
             
+            //            var image = UIImage(contentsOfFile: friends[indexPath.row].avaRealm) ?? UIImage(named: "empty_photo")
+//            var image: UIImage?
             var image = UIImage(named: "empty_photo")
             
             if friends[indexPath.row].avaRealm != "" {
-                let imageURL = URL(string: friends[indexPath.row].avaRealm)
+                
+                let imageURL = getDocumentsDir().appendingPathComponent(friends[indexPath.row].avaRealm)
                 do {
-                    let imageData = try Data(contentsOf: imageURL!)
+                    let imageData = try Data(contentsOf: imageURL)
                     image = UIImage(data: imageData)
                 }
                 catch {
                     print(error)
                 }
+                
+                // работает, но пробую сделать лучше
+                
+                //                let imageURL = URL(string: friends[indexPath.row].avaRealm)
+                //                do {
+                //                    let imageData = try Data(contentsOf: imageURL!)
+                //                    image = UIImage(data: imageData)
+                //                }
+                //                catch {
+                //                    print(error)
+                //                }
             }
-                        
-//            cell.shadowView.image1 = friends[indexPath.row].photo100
+            
+            //            cell.shadowView.image1 = friends[indexPath.row].photo100
             cell.shadowView.image1 = image
             return cell
         }
@@ -302,15 +316,15 @@ import RealmSwift
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //        let character = firstCharacters[section]
-//        let character = firstCharactersAPI[section]
+        //        let character = firstCharactersAPI[section]
         let character = firstCharactersRealm[section]
-
+        
         return String(character)
     }
     
-//            override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//                tableView.dequeueReusableHeaderFooterView(withIdentifier: )
-//            }
+    //            override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    //                tableView.dequeueReusableHeaderFooterView(withIdentifier: )
+    //            }
     
     
     // Func for sorting friends
@@ -361,7 +375,7 @@ import RealmSwift
         var sortedPeople = [Character: [FriendRealm]]()
         
         ourFriendss.forEach { friend in
-//            guard let character = friend.first_name.first else { return }
+            //            guard let character = friend.first_name.first else { return }
             guard let character = friend.firstName.first else { return }
             if var thisCharFriends = sortedPeople[character] {
                 thisCharFriends.append(friend)
@@ -436,54 +450,54 @@ import RealmSwift
     }
     
     var timeOfStart: Timer?
+    
+    @objc func stopAnimation(){
+        timeOfStart?.invalidate()
+        self.animationPerformed = true
+        self.performSegue(withIdentifier: "goToFriendCollectionVC", sender: self)
+    }
+    
+    func animation(){
         
-        @objc func stopAnimation(){
-            timeOfStart?.invalidate()
-            self.animationPerformed = true
-            self.performSegue(withIdentifier: "goToFriendCollectionVC", sender: self)
-        }
+        timeOfStart = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(stopAnimation), userInfo: nil, repeats: false)
         
-        func animation(){
-                        
-            timeOfStart = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(stopAnimation), userInfo: nil, repeats: false)
-            
-            self.grayView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-            self.grayView!.backgroundColor = .lightGray
-            self.grayView!.layer.opacity = 0.5
+        self.grayView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
+        self.grayView!.backgroundColor = .lightGray
+        self.grayView!.layer.opacity = 0.5
         
-            self.view.addSubview(self.grayView!)
-            
-            self.dotsView = UIView(frame: CGRect(x: self.grayView!.bounds.width/2-50, y: self.grayView!.bounds.height/2-15, width: 100, height: 30))
-            self.dotsView!.backgroundColor = .gray
-            self.dotsView!.layer.cornerRadius = 15
-            self.dotsView!.layer.masksToBounds = true
-            self.view.addSubview(self.dotsView!)
-            
-            let firstDot = UIView(frame: CGRect(x: 25, y: self.dotsView!.bounds.height/2-5, width: 10, height: 10))
-            firstDot.backgroundColor = .green
-            firstDot.layer.cornerRadius = firstDot.frame.height/2
-            self.dotsView!.addSubview(firstDot)
-            
-            let secondDot = UIView(frame: CGRect(x: 10, y: self.dotsView!.bounds.height/2-5, width: 10, height: 10))
-            secondDot.backgroundColor = .yellow
-            secondDot.layer.cornerRadius = secondDot.frame.height/2
-            self.dotsView!.addSubview(secondDot)
-            
-            let transform1 = CGAffineTransform(translationX: 60, y: 0)
-            let transform2 = transform1.concatenating(CGAffineTransform(translationX: 0, y: 0))
-            
-            UIView.animateKeyframes(withDuration: 1, delay: 0, options: [.repeat, .calculationModeCubicPaced, .autoreverse], animations: {
-                UIView.addKeyframe(withRelativeStartTime: 1, relativeDuration: 1) {
-                    firstDot.transform = transform1
-                }
-            }, completion: nil)
-            
-            UIView.animateKeyframes(withDuration: 1, delay: 0.04, options: [.repeat, .calculationModeCubicPaced, .autoreverse], animations: {
-                UIView.addKeyframe(withRelativeStartTime: 1, relativeDuration: 1) {
-                    secondDot.transform = transform2
-                }
-            }, completion: nil)
-        }
+        self.view.addSubview(self.grayView!)
+        
+        self.dotsView = UIView(frame: CGRect(x: self.grayView!.bounds.width/2-50, y: self.grayView!.bounds.height/2-15, width: 100, height: 30))
+        self.dotsView!.backgroundColor = .gray
+        self.dotsView!.layer.cornerRadius = 15
+        self.dotsView!.layer.masksToBounds = true
+        self.view.addSubview(self.dotsView!)
+        
+        let firstDot = UIView(frame: CGRect(x: 25, y: self.dotsView!.bounds.height/2-5, width: 10, height: 10))
+        firstDot.backgroundColor = .green
+        firstDot.layer.cornerRadius = firstDot.frame.height/2
+        self.dotsView!.addSubview(firstDot)
+        
+        let secondDot = UIView(frame: CGRect(x: 10, y: self.dotsView!.bounds.height/2-5, width: 10, height: 10))
+        secondDot.backgroundColor = .yellow
+        secondDot.layer.cornerRadius = secondDot.frame.height/2
+        self.dotsView!.addSubview(secondDot)
+        
+        let transform1 = CGAffineTransform(translationX: 60, y: 0)
+        let transform2 = transform1.concatenating(CGAffineTransform(translationX: 0, y: 0))
+        
+        UIView.animateKeyframes(withDuration: 1, delay: 0, options: [.repeat, .calculationModeCubicPaced, .autoreverse], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 1, relativeDuration: 1) {
+                firstDot.transform = transform1
+            }
+        }, completion: nil)
+        
+        UIView.animateKeyframes(withDuration: 1, delay: 0.04, options: [.repeat, .calculationModeCubicPaced, .autoreverse], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 1, relativeDuration: 1) {
+                secondDot.transform = transform2
+            }
+        }, completion: nil)
+    }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if animationPerformed == true{
@@ -515,7 +529,9 @@ import RealmSwift
                         }
                         
                         try! realm.write {
-                            friend.avaRealm = fileUrl.absoluteString
+                            //                            friend.avaRealm = fileUrl.absoluteString
+                            friend.avaRealm = nameForFile
+                            
                             print(friend.avaRealm)
 //                            self.tableView.reloadData()
                         }
@@ -525,7 +541,7 @@ import RealmSwift
                 }
             })
         }
-//        tableView.reloadData()
+        //                tableView.reloadData()
     }
     
     

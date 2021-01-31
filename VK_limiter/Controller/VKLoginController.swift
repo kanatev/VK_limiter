@@ -456,6 +456,9 @@ extension VKLoginController: WKNavigationDelegate {
 //                    print(error.localizedDescription)
 //                    return
 //                }
+                
+                // сохраняем адрес фото avaRealm, которое в песочнице
+//                let avaRealm = 
                     
                 
                 let currentFriendFromAPI = FriendRealm(id: id, firstName: firstName, lastName: lastName, photo100: photo100, avaRealm: "")
@@ -478,11 +481,15 @@ extension VKLoginController: WKNavigationDelegate {
                 let suchFriendInRealm = realm.objects(FriendRealm.self).filter("id == %@", currentFriendFromAPI.id).first
                 if suchFriendInRealm != nil {
 //                    print("Такой друг есть \(suchFriendInRealm as Any)")
-                    try! realm.write {
-                        suchFriendInRealm?.firstName = currentFriendFromAPI.firstName
-                        suchFriendInRealm?.lastName = currentFriendFromAPI.lastName
-                        suchFriendInRealm?.photo100 = currentFriendFromAPI.photo100
-                    }
+                    
+//          ------------------------------------------------------------------
+//                    try! realm.write {
+//                        suchFriendInRealm?.firstName = currentFriendFromAPI.firstName
+//                        suchFriendInRealm?.lastName = currentFriendFromAPI.lastName
+//                        suchFriendInRealm?.photo100 = currentFriendFromAPI.photo100
+//                    }
+//          ------------------------------------------------------------------
+                    
 //                    let tmpFr = realm.objects(FriendRealm.self).filter("id == %@", currentFriendFromAPI.id).first
 //                    print("И мы обновили его данные:  \(tmpFr as Any)")
                 } else {
