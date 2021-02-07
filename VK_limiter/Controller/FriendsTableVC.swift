@@ -201,6 +201,10 @@ import RealmSwift
     override func viewDidLoad() {
         super.viewDidLoad()
         ourSearchBar.delegate = self
+        
+        //        fetchAndSavePhotos()
+        
+        
         //        self.friendsArrayAPI = FriendsDataSingleton.shared.friendsArray!
         
         //        let realm = try! Realm()
@@ -212,7 +216,6 @@ import RealmSwift
         //        (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm(friendsArrayRealm!)
         (firstCharactersRealm, sortedFriendsDictRealm) = sortFriendsFromRealm()
         
-        fetchAndSavePhotos()
         
         
         //        self.refreshControl = myRefreshControl
@@ -249,65 +252,69 @@ import RealmSwift
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //        let character = firstCharacters[section]
-        //        let friendsCount = sortedFriendsDict[character]?.count
-        //        return friendsCount ?? 0
-        //        let character = firstCharactersAPI[section]
-        //        let friendsCount = sortedFriendsDictAPI[character]?.count
         let character = firstCharactersRealm[section]
         let friendsCount = sortedFriendsDictRealm[character]?.count
-        
         return friendsCount ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsTableViewCell
-        //        let character = firstCharacters[indexPath.section]
-        //        if let friends = sortedFriendsDict[character]{
-        //            cell.friendNameLabel.text = friends[indexPath.row].name
-        //            cell.shadowView.image1 = friends[indexPath.row].avatar
-        //
-        //            return cell
-        //        }
-        //        let character = firstCharactersAPI[indexPath.section]
-        //        if let friends = sortedFriendsDictAPI[character]{
-        //            cell.friendNameLabel.text = friends[indexPath.row].first_name + " " + friends[indexPath.row].last_name
-        //            cell.shadowView.image1 = friends[indexPath.row].photo100
+        
         let character = firstCharactersRealm[indexPath.section]
         
         if let friends = sortedFriendsDictRealm[character]{
             cell.friendNameLabel.text = friends[indexPath.row].firstName + " " + friends[indexPath.row].lastName
             
-            //            print("print: \(friends[indexPath.row].avaRealm)")
-            
-            //            var image = UIImage(contentsOfFile: friends[indexPath.row].avaRealm) ?? UIImage(named: "empty_photo")
-//            var image: UIImage?
-            var image = UIImage(named: "empty_photo")
-            
+            var image: UIImage? = nil
+
+
             if friends[indexPath.row].avaRealm != "" {
-                
-                let imageURL = getDocumentsDir().appendingPathComponent(friends[indexPath.row].avaRealm)
+                DispatchQueue.main.async {
+                    let imageURL = self.getDocumentsDir().appendingPathComponent(friends[indexPath.row].avaRealm)
                 do {
                     let imageData = try Data(contentsOf: imageURL)
                     image = UIImage(data: imageData)
+                    cell.shadowView.image1 = image
+//                    cell.setNeedsLayout()
                 }
                 catch {
                     print(error)
                 }
-                
-                // работает, но пробую сделать лучше
-                
-                //                let imageURL = URL(string: friends[indexPath.row].avaRealm)
-                //                do {
-                //                    let imageData = try Data(contentsOf: imageURL!)
-                //                    image = UIImage(data: imageData)
-                //                }
-                //                catch {
-                //                    print(error)
-                //                }
             }
-            
-            //            cell.shadowView.image1 = friends[indexPath.row].photo100
+
+            } else {
+                // фетчим аву, сохраняем в Realm и релоадим ячейку
+                self.fetchImage(from: friends[indexPath.row].photo100, completionHandler: { (imageData) in
+                    DispatchQueue.main.async {
+                    if let data = imageData {
+//                        DispatchQueue.main.async {
+                            let img = UIImage(data: data)
+//                            image = img
+                            let nameForFile = "ava_" + String(friends[indexPath.row].id) + ".png"
+                            let fileUrl = self.getDocumentsDir().appendingPathComponent(nameForFile)
+
+                            guard let data = img?.pngData() else {return}
+                            do {
+                                try? data.write(to: fileUrl)
+                            }
+
+                            let realm = try! Realm()
+
+                            try! realm.write {
+                                friends[indexPath.row].avaRealm = nameForFile
+                                print(friends[indexPath.row].avaRealm)
+                            }
+                            image = img
+                            cell.shadowView.image1 = image
+//                            cell.setNeedsLayout()
+//                        }
+                    } else {
+                        print("Error loading image");
+                    }
+                }
+                })
+
+            }
             cell.shadowView.image1 = image
             return cell
         }
@@ -315,18 +322,12 @@ import RealmSwift
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        //        let character = firstCharacters[section]
-        //        let character = firstCharactersAPI[section]
+
         let character = firstCharactersRealm[section]
         
         return String(character)
     }
-    
-    //            override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //                tableView.dequeueReusableHeaderFooterView(withIdentifier: )
-    //            }
-    
-    
+ 
     // Func for sorting friends
     private func sort(_ friends: [UserStruct]) -> (characters: [Character], sortedCharacters: [Character:[UserStruct]]) {
         
@@ -533,7 +534,7 @@ import RealmSwift
                             friend.avaRealm = nameForFile
                             
                             print(friend.avaRealm)
-//                            self.tableView.reloadData()
+                            //                            self.tableView.reloadData()
                         }
                     }
                 } else {

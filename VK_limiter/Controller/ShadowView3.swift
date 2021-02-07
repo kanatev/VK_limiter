@@ -83,7 +83,7 @@ import UIKit
         self.addSubview(borderView)
         
         imageView.frame = CGRect.init(x: 0, y: 0, width: borderView.frame.width, height: borderView.frame.height)
-        imageView.backgroundColor = .red
+        imageView.backgroundColor = .white
         imageView.image = image1
         borderView.addSubview(imageView)
     }

@@ -26,7 +26,7 @@ class VKLoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        realmDeleteAll()
+        realmDeleteAll()
         
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
